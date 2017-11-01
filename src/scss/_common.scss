@@ -185,6 +185,20 @@ body{
     }
 }
 
+.credits{
+    position: absolute;
+    bottom: 0;
+    left: 10px;
+    
+    p{
+        font-size: 10px;
+        color: #aaa;
+    }
+    
+    a, a:active, a:focus, a:hover{
+        color: #fff;
+    }
+}
 
 
 //Media queries

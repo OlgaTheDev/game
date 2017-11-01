@@ -228,7 +228,7 @@
         var gDefaultSkinColor = 'skin-color-1',
             gDefaultHairColor = 'hair-color-1',
             gDefaultHairCut = $('#g-hair-1'),
-            gDefaultOutfit = $('#g-suit-1'),
+            gDefaultClothes = $('#g-suit-1'),
             gDefaultGlasses = false,
             gDefaultAccessories = $('#accessories-1');
         
@@ -236,16 +236,16 @@
         var mDefaultSkinColor = 'skin-color-1',
             mDefaultHairColor = 'hair-color-1',
             mDefaultHairCut = $('#m-hair-1'),
-            mDefaultOutfit = $('#m-suit-1'),
+            mDefaultClothes = $('#m-suit-1'),
             mDefaultGlasses = false;
         
         
         
         //gender
-        var maleSvg = $('#male-svg'),
-            femaleSvg = $('#female-svg'),
-            male = true,
-            female = false;
+        var menSvg = $('#men-svg'),
+            girlSvg = $('#girl-svg'),
+            men = true,
+            girl = false;
                 
             
         //gender selection
@@ -256,36 +256,40 @@
             gCurrentHairColor,
             mCurrentSkinColor,
             gCurrentSkinColor,
-            mCurrentOutfit,
-            gCurrentOutfit,
+            mCurrentClothes,
+            gCurrentClothes,
             mCurrentGlasses,
             gCurrentGlasses,
-            mCurrentItemIndex,
-            gCurrentItemIndex;
+            mCurrentHairCutIndex,
+            gCurrentHairCutIndex,
+            mCurrentClothesItemIndex,
+            gCurrentClothesItemIndex;
 
         userGender.change(function() {
             
             detectGender($(this).val());
             
-            if (male) {
+            if (men) {
                 
                 // update select for hair cut
                 mCurrentHairCut = mHairCutSelected || mDefaultHairCut;
                 hairCutSelected.val([mCurrentHairCut.attr('id').slice(2)]);
-                mCurrentItemIndex = mHairCutItemIndex || 0;
-                owl.trigger('to.owl.carousel', [mCurrentItemIndex]);
+                mCurrentHairCutIndex = mHairCutItemIndex || 0;
+                hairCutOwl.trigger('to.owl.carousel', [mCurrentHairCutIndex]);
                 
                 // update select for hair color
                 mCurrentHairColor = mHairColorSelected || mDefaultHairColor;
-                $('#hair-color').val(mCurrentHairColor).niceSelect('update');
+                userHairColor.val([mCurrentHairColor]);
                 
                 //update select for skin color
                 mCurrentSkinColor = mSkinColorSelected || mDefaultSkinColor;
-                $('input[name="skin-color"]').val([mCurrentSkinColor]);
+                userSkinColor.val([mCurrentSkinColor]);
                 
-                //update select for outfit
-                mCurrentOutfit = mOutfitSelected || mDefaultOutfit;
-                $('#suit').val(mCurrentOutfit.attr('id').slice(2)).niceSelect('update');
+                //update select for clothes
+                mCurrentClothes = mClothesSelected || mDefaultClothes;
+                userClothes.val([mCurrentClothes.attr('id').slice(2)]);
+                mCurrentClothesItemIndex = mClothesItemIndex || 0;
+                clothesOwl.trigger('to.owl.carousel', [mCurrentClothesItemIndex]);
                 
                 //update glasses
                 mCurrentGlasses = mGlasses || mDefaultGlasses;
@@ -295,27 +299,27 @@
                 userAccessories.parents('.accessories-select').hide();
                 
                 
-            } else if (female) {
+            } else if (girl) {
                 
                 // update select & carousel for hair cut
                 gCurrentHairCut = gHairCutSelected || gDefaultHairCut;
                 hairCutSelected.val([gCurrentHairCut.attr('id').slice(2)]);
-                gCurrentItemIndex = gHairCutItemIndex || 0;
-                owl.trigger('to.owl.carousel', [gCurrentItemIndex]);
+                gCurrentHairCutIndex = gHairCutItemIndex || 0;
+                hairCutOwl.trigger('to.owl.carousel', [gCurrentHairCutIndex]);
 
-
-                
                 // update select for hair color
                 gCurrentHairColor = gHairColorSelected || gDefaultHairColor;
-                $('#hair-color').val(gCurrentHairColor).niceSelect('update');
+                userHairColor.val([gCurrentHairColor]);
                 
                 //update select for skin color
                 gCurrentSkinColor = gSkinColorSelected || gDefaultSkinColor;
-                $('input[name="skin-color"]').val([gCurrentSkinColor]);
+                userSkinColor.val([gCurrentSkinColor]);
                 
-                //update select for outfit
-                gCurrentOutfit = gOutfitSelected || gDefaultOutfit;
-                $('#suit').val(gCurrentOutfit.attr('id').slice(2)).niceSelect('update');
+                //update select for clothes
+                gCurrentClothes = gClothesSelected || gDefaultClothes;
+                userClothes.val([gCurrentClothes.attr('id').slice(2)]);
+                gCurrentClothesItemIndex = gClothesItemIndex || 0;
+                clothesOwl.trigger('to.owl.carousel', [gCurrentClothesItemIndex]);
                 
                 //update glasses
                 gCurrentGlasses = gGlasses || gDefaultGlasses;
@@ -330,231 +334,25 @@
         
         
         function detectGender(gender) {
-            if (gender == 'male') {
-                maleSvg.css('display', 'block');
-                femaleSvg.css('display', 'none');
-                male = true;
-                female = false;
+            if (gender == 'men') {
+                menSvg.css('display', 'block');
+                girlSvg.css('display', 'none');
+                men = true;
+                girl = false;
             } else {
-                maleSvg.css('display', 'none');
-                femaleSvg.css('display', 'block');
-                male = false;
-                female = true;
+                menSvg.css('display', 'none');
+                girlSvg.css('display', 'block');
+                men = false;
+                girl = true;
             }
         }
         
         
-        //haircut selection
-//        var hairCutSelected = $('#haircut'),
-        var hairCutSelected = $('input[name="user-haircut"]'),
-            mHairCutSelected,
-            gHairCutSelected,
-            mHairCutsArray = $('.m-hair'),
-            gHairCutsArray = $('.g-hair');
-        
-        hairCutSelected.change(function(){
-            if (male) {
-                mHairCutSelected = $('#m-' + $(this).val());
-                selectHairCut(mHairCutSelected);
-            } else {
-                console.log('Hi!');
-                gHairCutSelected = $('#g-' + $(this).val());
-                selectHairCut(gHairCutSelected);
-            }
-        });
-        
-        
-        function selectHairCut(hairCut) {
-            if (male){
-                showSelectedItem(hairCut, mHairCutsArray);
-
-            } else {
-                showSelectedItem(hairCut, gHairCutsArray);
-            }
-        }
-        
-        //hair color selection
-        var userHairColor = $('#hair-color'),
-            mHairColorSelected,
-            gHairColorSelected,
-            gLightHairColor = gHairCutsArray.find('.hair-light'),
-            gDarkHairColor = gHairCutsArray.find('.hair-dark'),
-            mLightHairColor = mHairCutsArray.find('.hair-light'),
-            mDarkHairColor = mHairCutsArray.find('.hair-dark');
-        
-        userHairColor.change(function(){
-            selectHairColor($(this).val());
-        })
-        
-        function selectHairColor(hairColor) {
-            var hairColorSelected = toCamelCase(hairColor),
-                hairColorSelectedValues = hairColorsObj[hairColorSelected];
-            
-            if(male) {
-                mHairColorSelected = hairColor;
-                mLightHairColor.css('fill', hairColorSelectedValues.light);
-                mDarkHairColor.css('fill', hairColorSelectedValues.dark);
-            } else {
-                gHairColorSelected = hairColor;
-                gLightHairColor.css('fill', hairColorSelectedValues.light);
-                gDarkHairColor.css('fill', hairColorSelectedValues.dark);
-            }
-        }
-        
-
-        //skin color selection
-        var userSkinColor = $('input[name="skin-color"]'),
-            mSkinColorSelected,
-            gSkinColorSelected,
-            gBody = $('#g-body, #female-svg .skin-dark'),
-            gNeck = $('#g-neck'),
-            gFace = $('#female-svg .skin-light'),
-            gMouth = $('#g-mouth'),
-            mBody = $('#m-body, #male-svg .skin-dark'),
-            mNeck = $('#m-neck'),
-            mFace = $('#male-svg .skin-light'),
-            mMouth = $('#m-mouth');
-        
-        userSkinColor.change(function(){
-            selectSkinColor($(this).val());
-        })
-        
-        
-        function selectSkinColor(skinColor) {
-            var skinColorSelected = toCamelCase(skinColor),
-                skinColorSelectedValues = skinColorObj[skinColorSelected];
-            
-            if (male) {
-                mSkinColorSelected = skinColor;
-                mBody.css('fill', skinColorSelectedValues.body);
-                mNeck.css('fill', skinColorSelectedValues.neck);
-                mFace.css('fill', skinColorSelectedValues.face);
-                mMouth.css('fill', skinColorSelectedValues.mouth);
-            } else {
-                gSkinColorSelected = skinColor;
-                gBody.css('fill', skinColorSelectedValues.body);
-                gNeck.css('fill', skinColorSelectedValues.neck);
-                gFace.css('fill', skinColorSelectedValues.face);
-                gMouth.css('fill', skinColorSelectedValues.mouth);
-            }
-        }
-        
-        
-        
-        //outfit selection
-        var userOutfit = $('#suit'),
-            gOutfitsArray = $('.g-suit'),
-            mOutfitsArray = $('.m-suit'),
-            mOutfitSelected,
-            gOutfitSelected;
-        
-        userOutfit.change(function(){
-            if (male) {
-                mOutfitSelected = $('#m-' + $(this).val());
-                showSelectedItem(mOutfitSelected, mOutfitsArray);
-
-            } else {
-                gOutfitSelected = $('#g-' + $(this).val());
-                showSelectedItem(gOutfitSelected, gOutfitsArray);
-            }
-            
-        })
-    
-        
-        //accessories selection
-//        var userAccessories = $('#user-accessories'),
-        var userAccessories = $('input[name="user-accessories"]'),
-            accessoriesArray = $('.accessories');
-        
-        //hide accessories select for male on document ready
-        userAccessories.parents('.accessories-select').hide();
-        
-        userAccessories.change(function(){
-            var accessoriesSelected = '#' + $(this).val();
-            console.log(accessoriesSelected);
-            showSelectedItem($(accessoriesSelected), accessoriesArray);
-        })
-        
-        
-        //glasses selection
-        var userGlasses = $('#user-glasses'),
-            mGlasses = false,
-            gGlasses = false,
-            glassesNewPath = document.createElementNS('http://www.w3.org/2000/svg',"path");
-        
-        glassesNewPath.setAttribute('class', 'glasses');
-        glassesNewPath.setAttribute('d', 'M347,156h-83c-6.617,0-12,5.383-12,12v0.432c-5.086-5.198-12.172-8.432-20-8.432   s-14.914,3.234-20,8.432V168c0-6.617-5.383-12-12-12h-83c-2.209,0-4,1.791-4,4s1.791,4,4,4h23.7c-0.445,1.253-0.7,2.596-0.7,4v24   c0,6.617,5.383,12,12,12h48c6.617,0,12-5.383,12-12v-4c0-11.027,8.973-20,20-20s20,8.973,20,20v4c0,6.617,5.383,12,12,12h48   c6.617,0,12-5.383,12-12v-24c0-1.404-0.255-2.747-0.7-4H347c2.209,0,4-1.791,4-4S349.209,156,347,156z M204,192   c0,2.203-1.793,4-4,4h-48c-2.207,0-4-1.797-4-4v-24c0-2.203,1.793-4,4-4h48c2.207,0,4,1.797,4,4V192z M316,168v24   c0,2.203-1.793,4-4,4h-48c-2.207,0-4-1.797-4-4v-24c0-2.203,1.793-4,4-4h48C314.207,164,316,165.797,316,168z');
-        glassesNewPath.setAttribute('fill', '#734A3E');
-        
-        $('#glasses-trigger').click(function(){
-            var gHairArray = $('.g-hair'),
-                mHairArray = $('.m-hair');
-            
-            if (male) {
-                var mGlassesArray = $('#male-svg .glasses');
-                mGlasses = userGlasses.is(':checked') ? false : true;
-                
-                selectGlasses(mGlasses, $('#male-svg'), mHairArray, mGlassesArray);
-                
-            } else {
-                var gGlassesArray = $('#female-svg .glasses');
-                gGlasses = userGlasses.is(':checked') ? false : true;
-                
-                selectGlasses(gGlasses, $('#female-svg'), gHairArray, gGlassesArray);
-            }
-                   
-        })
-        
-        function selectGlasses(glasses, personSvg, hairArray, glassesArray) {
-            if (glasses) {
-                    personSvg.find('.skin-dark').after(glassesNewPath);
-                } else {
-                    for (var i = 0; i < hairArray.length; i++) {
-                        hairArray[i].removeChild(glassesArray[i]);
-                    }
-                }
-        }
-        
-        
-        //setting default options - Girls
-        showSelectedItem(gDefaultHairCut, gHairCutsArray);
-        showSelectedItem(gDefaultOutfit, gOutfitsArray);
-        showSelectedItem(gDefaultAccessories, accessoriesArray);
-        
-        var gDefaultHairColorValues = hairColorsObj[toCamelCase(gDefaultHairColor)],
-            gSkinColorSelectedValues = skinColorObj[toCamelCase(gDefaultSkinColor)];
-        
-        gLightHairColor.css('fill', gDefaultHairColorValues.light);
-        gDarkHairColor.css('fill', gDefaultHairColorValues.dark);
-        
-        gBody.css('fill', gSkinColorSelectedValues.body);
-        gNeck.css('fill', gSkinColorSelectedValues.neck);
-        gFace.css('fill', gSkinColorSelectedValues.face);
-        gMouth.css('fill', gSkinColorSelectedValues.mouth);
-        
-        
-        
-        //setting default options - Men
-        showSelectedItem(mDefaultHairCut, mHairCutsArray);
-        showSelectedItem(mDefaultOutfit, mOutfitsArray);
-        
-        var mDefaultHairColorValues = hairColorsObj[toCamelCase(mDefaultHairColor)],
-            mSkinColorSelectedValues = skinColorObj[toCamelCase(mDefaultSkinColor)];
-        
-        mLightHairColor.css('fill', mDefaultHairColorValues.light);
-        mDarkHairColor.css('fill', mDefaultHairColorValues.dark);
-    
-        mBody.css('fill', mSkinColorSelectedValues.body);
-        mNeck.css('fill', mSkinColorSelectedValues.neck);
-        mFace.css('fill', mSkinColorSelectedValues.face);
-        mMouth.css('fill', mSkinColorSelectedValues.mouth);
-        
-        
-        
-        
+        //init owl carousel
         var owl = $('.owl-carousel'),
             hairCutOwl = $('.hair-cut-select'),
-            accessoriesOwl = $('.accessories-select');
+            accessoriesOwl = $('.accessories-select'),
+            clothesOwl = $('.clothes-select');
         
         owl.owlCarousel({
             items: 1,
@@ -564,16 +362,26 @@
 
         });
         
-        var mHairCutItemIndex,
-            gHairCutItemIndex;
+        
+        //CHECKING RADIO BUTTONS FOR FEATURES THAT USE OWL CAROUSEL 
+        //TRIGGERS ON CHANGE EVENT OF CAROUSEL
+        
         
         //select haircut
-        hairCutOwl.on('dragged.owl.carousel', function(event) {
+        var hairCutSelected = $('input[name="user-haircut"]'),
+            mHairCutSelected,
+            gHairCutSelected,
+            mHairCutsArray = $('.m-hair'),
+            gHairCutsArray = $('.g-hair'),
+            mHairCutItemIndex,
+            gHairCutItemIndex;
+        
+        hairCutOwl.on('changed.owl.carousel', function(event) {
             
             var carouselItems = $(event.target).find('.owl-item'),
                 activeCarouselItem = carouselItems[event.item.index];
 
-            if (male) {
+            if (men) {
                 mHairCutItemIndex = event.item.index;
                 var mActiveInput = $(activeCarouselItem).find('input');
                 
@@ -593,16 +401,222 @@
             }
         });
         
+        function selectHairCut(hairCut) {
+            if (men){
+                showSelectedItem(hairCut, mHairCutsArray);
+
+            } else {
+                showSelectedItem(hairCut, gHairCutsArray);
+            }
+        }
+        
+        
+        //select clothes
+        var userClothes = $('input[name="user-clothes"]'),
+            gClothesArray = $('.g-suit'),
+            mClothesArray = $('.m-suit'),
+            mClothesSelected,
+            gClothesSelected,
+            mClothesItemIndex,
+            gClothesItemIndex;
+        
+        clothesOwl.on('changed.owl.carousel', function(event) {
+            
+            var carouselItems = $(event.target).find('.owl-item'),
+                activeCarouselItem = carouselItems[event.item.index];
+            
+            if (men) {
+                
+                mClothesItemIndex = event.item.index;
+                var mActiveInput = $(activeCarouselItem).find('input');
+                
+                mActiveInput.prop('checked', true);
+                
+                mClothesSelected = $('#m-' + mActiveInput.val());
+                showSelectedItem(mClothesSelected, mClothesArray);
+                
+            } else {
+                
+                gClothesItemIndex = event.item.index;
+                var gActiveInput = $(activeCarouselItem).find('input');
+                
+                gActiveInput.prop('checked', true);
+                
+                gClothesSelected = $('#g-' + gActiveInput.val());
+                showSelectedItem(gClothesSelected, gClothesArray);
+                
+            }
+        });
+    
         
         //select accessories
-        accessoriesOwl.on('dragged.owl.carousel', function(event) {
+        var userAccessories = $('input[name="user-accessories"]'),
+            accessoriesArray = $('.accessories');
+                
+        //hide accessories select for men on document ready
+        userAccessories.parents('.accessories-select').hide();   
+        
+        accessoriesOwl.on('changed.owl.carousel', function(event) {
             
             var carouselItems = $(event.target).find('.owl-item'),
                 activeCarouselItem = carouselItems[event.item.index],
                 activeInput = $(activeCarouselItem).find('input'),
                 accessoriesSelected = '#' + activeInput.val();
             showSelectedItem($(accessoriesSelected), accessoriesArray);
+        });
+
+        
+        //FEATURS THAT DOESN'T USE CAROUSEL 
+        
+        //hair color selection
+        var userHairColor = $('input[name="user-hair-color"]'),
+            mHairColorSelected,
+            gHairColorSelected,
+            gLightHairColor = gHairCutsArray.find('.hair-light'),
+            gDarkHairColor = gHairCutsArray.find('.hair-dark'),
+            mLightHairColor = mHairCutsArray.find('.hair-light'),
+            mDarkHairColor = mHairCutsArray.find('.hair-dark');
+        
+        userHairColor.change(function(){
+            selectHairColor($(this).val());
         })
+        
+        function selectHairColor(hairColor) {
+            var hairColorSelected = toCamelCase(hairColor),
+                hairColorSelectedValues = hairColorsObj[hairColorSelected];
+            
+            if(men) {
+                mHairColorSelected = hairColor;
+                mLightHairColor.css('fill', hairColorSelectedValues.light);
+                mDarkHairColor.css('fill', hairColorSelectedValues.dark);
+            } else {
+                gHairColorSelected = hairColor;
+                gLightHairColor.css('fill', hairColorSelectedValues.light);
+                gDarkHairColor.css('fill', hairColorSelectedValues.dark);
+            }
+        }
+        
+
+        //skin color selection
+        var userSkinColor = $('input[name="user-skin-color"]'),
+            mSkinColorSelected,
+            gSkinColorSelected,
+            gBody = $('#g-body, #girl-svg .skin-dark'),
+            gNeck = $('#g-neck'),
+            gFace = $('#girl-svg .skin-light'),
+            gMouth = $('#g-mouth'),
+            mBody = $('#m-body, #men-svg .skin-dark'),
+            mNeck = $('#m-neck'),
+            mFace = $('#men-svg .skin-light'),
+            mMouth = $('#m-mouth');
+        
+        userSkinColor.change(function(){
+            selectSkinColor($(this).val());
+        })
+        
+        function selectSkinColor(skinColor) {
+            var skinColorSelected = toCamelCase(skinColor),
+                skinColorSelectedValues = skinColorObj[skinColorSelected];
+            
+            if (men) {
+                mSkinColorSelected = skinColor;
+                mBody.css('fill', skinColorSelectedValues.body);
+                mNeck.css('fill', skinColorSelectedValues.neck);
+                mFace.css('fill', skinColorSelectedValues.face);
+                mMouth.css('fill', skinColorSelectedValues.mouth);
+            } else {
+                gSkinColorSelected = skinColor;
+                gBody.css('fill', skinColorSelectedValues.body);
+                gNeck.css('fill', skinColorSelectedValues.neck);
+                gFace.css('fill', skinColorSelectedValues.face);
+                gMouth.css('fill', skinColorSelectedValues.mouth);
+            }
+        }
+             
+        
+        //glasses selection
+        var userGlasses = $('#user-glasses'),
+            mGlasses = false,
+            gGlasses = false,
+            glassesNewPath = document.createElementNS('http://www.w3.org/2000/svg',"path");
+        
+        glassesNewPath.setAttribute('class', 'glasses');
+        glassesNewPath.setAttribute('d', 'M347,156h-83c-6.617,0-12,5.383-12,12v0.432c-5.086-5.198-12.172-8.432-20-8.432   s-14.914,3.234-20,8.432V168c0-6.617-5.383-12-12-12h-83c-2.209,0-4,1.791-4,4s1.791,4,4,4h23.7c-0.445,1.253-0.7,2.596-0.7,4v24   c0,6.617,5.383,12,12,12h48c6.617,0,12-5.383,12-12v-4c0-11.027,8.973-20,20-20s20,8.973,20,20v4c0,6.617,5.383,12,12,12h48   c6.617,0,12-5.383,12-12v-24c0-1.404-0.255-2.747-0.7-4H347c2.209,0,4-1.791,4-4S349.209,156,347,156z M204,192   c0,2.203-1.793,4-4,4h-48c-2.207,0-4-1.797-4-4v-24c0-2.203,1.793-4,4-4h48c2.207,0,4,1.797,4,4V192z M316,168v24   c0,2.203-1.793,4-4,4h-48c-2.207,0-4-1.797-4-4v-24c0-2.203,1.793-4,4-4h48C314.207,164,316,165.797,316,168z');
+        glassesNewPath.setAttribute('fill', '#734A3E');
+        
+        $('#glasses-trigger').click(function(){
+            var gHairArray = $('.g-hair'),
+                mHairArray = $('.m-hair');
+            
+            if (men) {
+                var mGlassesArray = $('#men-svg .glasses');
+                mGlasses = userGlasses.is(':checked') ? false : true;
+                
+                selectGlasses(mGlasses, $('#men-svg'), mHairArray, mGlassesArray);
+                
+            } else {
+                var gGlassesArray = $('#girl-svg .glasses');
+                gGlasses = userGlasses.is(':checked') ? false : true;
+                
+                selectGlasses(gGlasses, $('#girl-svg'), gHairArray, gGlassesArray);
+            }
+                   
+        })
+        
+        function selectGlasses(glasses, personSvg, hairArray, glassesArray) {
+            if (glasses) {
+                    personSvg.find('.skin-dark').after(glassesNewPath);
+                } else {
+                    for (var i = 0; i < hairArray.length; i++) {
+                        hairArray[i].removeChild(glassesArray[i]);
+                    }
+                }
+        }
+        
+        
+        //DEFAULTS
+        
+        //setting default options - Men
+        showSelectedItem(mDefaultHairCut, mHairCutsArray);
+        showSelectedItem(mDefaultClothes, mClothesArray);
+        
+        var mDefaultHairColorValues = hairColorsObj[toCamelCase(mDefaultHairColor)],
+            mSkinColorSelectedValues = skinColorObj[toCamelCase(mDefaultSkinColor)];
+        
+        mLightHairColor.css('fill', mDefaultHairColorValues.light);
+        mDarkHairColor.css('fill', mDefaultHairColorValues.dark);
+    
+        mBody.css('fill', mSkinColorSelectedValues.body);
+        mNeck.css('fill', mSkinColorSelectedValues.neck);
+        mFace.css('fill', mSkinColorSelectedValues.face);
+        mMouth.css('fill', mSkinColorSelectedValues.mouth);
+        
+        
+        //setting default options - Girls
+        showSelectedItem(gDefaultHairCut, gHairCutsArray);
+        showSelectedItem(gDefaultClothes, gClothesArray);
+        showSelectedItem(gDefaultAccessories, accessoriesArray);
+        
+        var gDefaultHairColorValues = hairColorsObj[toCamelCase(gDefaultHairColor)],
+            gSkinColorSelectedValues = skinColorObj[toCamelCase(gDefaultSkinColor)];
+        
+        gLightHairColor.css('fill', gDefaultHairColorValues.light);
+        gDarkHairColor.css('fill', gDefaultHairColorValues.dark);
+        
+        gBody.css('fill', gSkinColorSelectedValues.body);
+        gNeck.css('fill', gSkinColorSelectedValues.neck);
+        gFace.css('fill', gSkinColorSelectedValues.face);
+        gMouth.css('fill', gSkinColorSelectedValues.mouth);
+        
+        
+        
+
+        
+        
+        
+        
+        
+        
         
     
     });

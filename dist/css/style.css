@@ -1221,6 +1221,16 @@ body {
             box-shadow: none;
     bottom: -5px; }
 
+.credits {
+  position: absolute;
+  bottom: 0;
+  left: 10px; }
+  .credits p {
+    font-size: 10px;
+    color: #aaa; }
+  .credits a, .credits a:active, .credits a.nice-select.open, .credits a:focus, .credits a:hover {
+    color: #fff; }
+
 @media screen and (min-width: 767px) {
   .container {
     width: 100%; } }
