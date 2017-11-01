@@ -157,7 +157,7 @@
             setTimeout(function(){
                 currentPage.removeClass('current page-rotateCubeLeftOut');
                 nextPage.addClass('current').removeClass('page-ontop page-rotateCubeLeftIn');
-            }, 600)
+            }, 1000)
             
         })
         
@@ -260,7 +260,8 @@
             gCurrentOutfit,
             mCurrentGlasses,
             gCurrentGlasses,
-            currentAccessories;
+            mCurrentItemIndex,
+            gCurrentItemIndex;
 
         userGender.change(function() {
             
@@ -270,7 +271,9 @@
                 
                 // update select for hair cut
                 mCurrentHairCut = mHairCutSelected || mDefaultHairCut;
-                $('#haircut').val(mCurrentHairCut.attr('id').slice(2)).niceSelect('update');
+                hairCutSelected.val([mCurrentHairCut.attr('id').slice(2)]);
+                mCurrentItemIndex = mHairCutItemIndex || 0;
+                owl.trigger('to.owl.carousel', [mCurrentItemIndex]);
                 
                 // update select for hair color
                 mCurrentHairColor = mHairColorSelected || mDefaultHairColor;
@@ -289,14 +292,18 @@
                 userGlasses.prop('checked', mCurrentGlasses);
                 
                 //update sccessories select
-                userAccessories.parent().hide();
+                userAccessories.parents('.accessories-select').hide();
                 
                 
-            } else {
+            } else if (female) {
                 
-                // update select for hair cut
+                // update select & carousel for hair cut
                 gCurrentHairCut = gHairCutSelected || gDefaultHairCut;
-                $('#haircut').val(gCurrentHairCut.attr('id').slice(2)).niceSelect('update');
+                hairCutSelected.val([gCurrentHairCut.attr('id').slice(2)]);
+                gCurrentItemIndex = gHairCutItemIndex || 0;
+                owl.trigger('to.owl.carousel', [gCurrentItemIndex]);
+
+
                 
                 // update select for hair color
                 gCurrentHairColor = gHairColorSelected || gDefaultHairColor;
@@ -315,7 +322,7 @@
                 userGlasses.prop('checked', gCurrentGlasses);
                 
                 //update sccessories select
-                userAccessories.parent().show();
+                userAccessories.parents('.accessories-select').show();
 
             }
             
@@ -338,7 +345,8 @@
         
         
         //haircut selection
-        var hairCutSelected = $('#haircut'),
+//        var hairCutSelected = $('#haircut'),
+        var hairCutSelected = $('input[name="user-haircut"]'),
             mHairCutSelected,
             gHairCutSelected,
             mHairCutsArray = $('.m-hair'),
@@ -349,6 +357,7 @@
                 mHairCutSelected = $('#m-' + $(this).val());
                 selectHairCut(mHairCutSelected);
             } else {
+                console.log('Hi!');
                 gHairCutSelected = $('#g-' + $(this).val());
                 selectHairCut(gHairCutSelected);
             }
@@ -453,14 +462,16 @@
     
         
         //accessories selection
-        var userAccessories = $('#user-accessories'),
+//        var userAccessories = $('#user-accessories'),
+        var userAccessories = $('input[name="user-accessories"]'),
             accessoriesArray = $('.accessories');
         
         //hide accessories select for male on document ready
-        userAccessories.parent().hide();
+        userAccessories.parents('.accessories-select').hide();
         
         userAccessories.change(function(){
             var accessoriesSelected = '#' + $(this).val();
+            console.log(accessoriesSelected);
             showSelectedItem($(accessoriesSelected), accessoriesArray);
         })
         
@@ -538,6 +549,60 @@
         mFace.css('fill', mSkinColorSelectedValues.face);
         mMouth.css('fill', mSkinColorSelectedValues.mouth);
         
+        
+        
+        
+        var owl = $('.owl-carousel'),
+            hairCutOwl = $('.hair-cut-select'),
+            accessoriesOwl = $('.accessories-select');
+        
+        owl.owlCarousel({
+            items: 1,
+            nav: true,
+            dots: false,
+            navText : ["<",">"]
+
+        });
+        
+        var mHairCutItemIndex,
+            gHairCutItemIndex;
+        
+        //select haircut
+        hairCutOwl.on('dragged.owl.carousel', function(event) {
+            
+            var carouselItems = $(event.target).find('.owl-item'),
+                activeCarouselItem = carouselItems[event.item.index];
+
+            if (male) {
+                mHairCutItemIndex = event.item.index;
+                var mActiveInput = $(activeCarouselItem).find('input');
+                
+                mActiveInput.prop('checked', true);
+                
+                mHairCutSelected = $('#m-' + mActiveInput.val());
+                selectHairCut(mHairCutSelected);
+                
+            } else {
+                gHairCutItemIndex = event.item.index;
+                var gActiveInput = $(activeCarouselItem).find('input');
+                
+                gActiveInput.prop('checked', true);
+                
+                gHairCutSelected = $('#g-' + gActiveInput.val());
+                selectHairCut(gHairCutSelected);
+            }
+        });
+        
+        
+        //select accessories
+        accessoriesOwl.on('dragged.owl.carousel', function(event) {
+            
+            var carouselItems = $(event.target).find('.owl-item'),
+                activeCarouselItem = carouselItems[event.item.index],
+                activeInput = $(activeCarouselItem).find('input'),
+                accessoriesSelected = '#' + activeInput.val();
+            showSelectedItem($(accessoriesSelected), accessoriesArray);
+        })
         
     
     });

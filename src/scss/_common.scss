@@ -222,22 +222,32 @@ body{
 //animation cube
 .page-rotateCubeLeftOut {
 	transform-origin: 100% 50%;
-	animation: rotateCubeLeftOut .6s both ease-in;
+	animation: rotateCubeLeftOut 1s both ease-in;
 }
 .page-rotateCubeLeftIn {
 	transform-origin: 0% 50%;
-	animation: rotateCubeLeftIn .6s both ease-in;
+	animation: rotateCubeLeftIn 1s both ease-in;
 }
 
 @keyframes rotateCubeLeftOut {
 	0% { }
-	50% { -webkit-animation-timing-function: ease-out; animation-timing-function: ease-out;  -webkit-transform: translateX(-50%) translateZ(-200px) rotateY(-45deg);  transform: translateX(-50%) translateZ(-200px) rotateY(-45deg); }
-	100% { opacity: .3; -webkit-transform: translateX(-100%) rotateY(-90deg); transform: translateX(-100%) rotateY(-90deg); }
+	50% { 
+        animation-timing-function: ease-out;    
+        transform: translateX(-50%) translateZ(-200px) rotateY(-45deg); 
+    }
+	100% { 
+        opacity: .3; 
+        transform: translateX(-100%) rotateY(-90deg); 
+    }
 }
 
 @keyframes rotateCubeLeftIn {
-	0% { -webkit-transform: translateX(100%) rotateY(90deg); transform: translateX(100%) rotateY(90deg); }
-	50% { -webkit-animation-timing-function: ease-out; animation-timing-function: ease-out;  -webkit-transform: translateX(50%) translateZ(-200px) rotateY(45deg);  transform: translateX(50%) translateZ(-200px) rotateY(45deg); }
+	0% {  transform: translateX(100%) rotateY(60deg); 
+    }
+	50% { 
+        animation-timing-function: ease-out;   
+        transform: translateX(50%) translateZ(-200px) rotateY(45deg); 
+    }
 }
 
 
@@ -284,3 +294,31 @@ body{
         opacity: 1;
     }
 }
+
+
+//horizontal radio select
+.horizontal-select{
+    width: 150px;
+    margin: 0 35px;
+//    overflow: hidden;
+//    
+//    .hs-wrapper{
+//        display: flex;
+//    }
+    
+    input{
+        display: none;
+    }
+    
+    label{
+        display: block;
+//        width: 150px;
+    }
+}
+
+
+
+
+
+
+

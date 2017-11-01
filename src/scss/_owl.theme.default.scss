@@ -1,0 +1,30 @@
+.owl-carousel{
+
+    .owl-nav{
+        position: absolute;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        z-index: -1;
+        
+        .owl-prev, .owl-next{
+            position: absolute;
+            display: block;
+            top: 50%;
+            transform: translateY(-50%);
+            
+            &.disabled{
+                color: #aaa;
+                cursor: default;
+            }
+        }
+    
+        .owl-prev{
+            left: -30px;
+        }
+        
+        .owl-next{
+            right: -30px;
+        }
+    }
+}
