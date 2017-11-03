@@ -250,20 +250,21 @@
             
         //gender selection
         var userGender = $('input[name="gender"]'),
-            mCurrentHairCut,
-            gCurrentHairCut,
-            mCurrentHairColor,
-            gCurrentHairColor,
-            mCurrentSkinColor,
-            gCurrentSkinColor,
-            mCurrentClothes,
-            gCurrentClothes,
-            mCurrentGlasses,
-            gCurrentGlasses,
-            mCurrentHairCutIndex,
-            gCurrentHairCutIndex,
-            mCurrentClothesItemIndex,
-            gCurrentClothesItemIndex;
+            mCurrentHairCut = mDefaultHairCut,
+            gCurrentHairCut = gDefaultHairCut,
+            mCurrentHairColor = mDefaultHairColor,
+            gCurrentHairColor = gDefaultHairColor,
+            mCurrentSkinColor = mDefaultSkinColor,
+            gCurrentSkinColor = gDefaultSkinColor,
+            mCurrentClothes = mDefaultClothes,
+            gCurrentClothes = gDefaultClothes,
+            mCurrentGlasses = mDefaultGlasses,
+            gCurrentGlasses = gDefaultGlasses,
+            mCurrentHairCutIndex = 0,
+            gCurrentHairCutIndex = 0,
+            mCurrentClothesItemIndex = 0,
+            gCurrentClothesItemIndex = 0,
+            gCurrentAccessories = gDefaultAccessories;
 
         userGender.change(function() {
             
@@ -272,27 +273,20 @@
             if (men) {
                 
                 // update select for hair cut
-                mCurrentHairCut = mHairCutSelected || mDefaultHairCut;
-                hairCutSelected.val([mCurrentHairCut.attr('id').slice(2)]);
-                mCurrentHairCutIndex = mHairCutItemIndex || 0;
+                userHairCut.val([mCurrentHairCut.attr('id').slice(2)]);
                 hairCutOwl.trigger('to.owl.carousel', [mCurrentHairCutIndex]);
                 
                 // update select for hair color
-                mCurrentHairColor = mHairColorSelected || mDefaultHairColor;
                 userHairColor.val([mCurrentHairColor]);
                 
                 //update select for skin color
-                mCurrentSkinColor = mSkinColorSelected || mDefaultSkinColor;
                 userSkinColor.val([mCurrentSkinColor]);
                 
                 //update select for clothes
-                mCurrentClothes = mClothesSelected || mDefaultClothes;
                 userClothes.val([mCurrentClothes.attr('id').slice(2)]);
-                mCurrentClothesItemIndex = mClothesItemIndex || 0;
                 clothesOwl.trigger('to.owl.carousel', [mCurrentClothesItemIndex]);
                 
                 //update glasses
-                mCurrentGlasses = mGlasses || mDefaultGlasses;
                 userGlasses.prop('checked', mCurrentGlasses);
                 
                 //update sccessories select
@@ -302,27 +296,20 @@
             } else if (girl) {
                 
                 // update select & carousel for hair cut
-                gCurrentHairCut = gHairCutSelected || gDefaultHairCut;
-                hairCutSelected.val([gCurrentHairCut.attr('id').slice(2)]);
-                gCurrentHairCutIndex = gHairCutItemIndex || 0;
+                userHairCut.val([gCurrentHairCut.attr('id').slice(2)]);
                 hairCutOwl.trigger('to.owl.carousel', [gCurrentHairCutIndex]);
 
                 // update select for hair color
-                gCurrentHairColor = gHairColorSelected || gDefaultHairColor;
                 userHairColor.val([gCurrentHairColor]);
                 
                 //update select for skin color
-                gCurrentSkinColor = gSkinColorSelected || gDefaultSkinColor;
                 userSkinColor.val([gCurrentSkinColor]);
                 
                 //update select for clothes
-                gCurrentClothes = gClothesSelected || gDefaultClothes;
                 userClothes.val([gCurrentClothes.attr('id').slice(2)]);
-                gCurrentClothesItemIndex = gClothesItemIndex || 0;
                 clothesOwl.trigger('to.owl.carousel', [gCurrentClothesItemIndex]);
                 
                 //update glasses
-                gCurrentGlasses = gGlasses || gDefaultGlasses;
                 userGlasses.prop('checked', gCurrentGlasses);
                 
                 //update accessories select
@@ -368,13 +355,9 @@
         
         
         //select haircut
-        var hairCutSelected = $('input[name="user-haircut"]'),
-            mHairCutSelected,
-            gHairCutSelected,
+        var userHairCut = $('input[name="user-haircut"]'),
             mHairCutsArray = $('.m-hair'),
-            gHairCutsArray = $('.g-hair'),
-            mHairCutItemIndex,
-            gHairCutItemIndex;
+            gHairCutsArray = $('.g-hair');
         
         hairCutOwl.on('changed.owl.carousel', function(event) {
             
@@ -382,22 +365,22 @@
                 activeCarouselItem = carouselItems[event.item.index];
 
             if (men) {
-                mHairCutItemIndex = event.item.index;
+                mCurrentHairCutIndex = event.item.index;
                 var mActiveInput = $(activeCarouselItem).find('input');
                 
                 mActiveInput.prop('checked', true);
                 
-                mHairCutSelected = $('#m-' + mActiveInput.val());
-                selectHairCut(mHairCutSelected);
+                mCurrentHairCut = $('#m-' + mActiveInput.val());
+                selectHairCut(mCurrentHairCut);
                 
             } else {
-                gHairCutItemIndex = event.item.index;
+                gCurrentHairCutIndex = event.item.index;
                 var gActiveInput = $(activeCarouselItem).find('input');
                 
                 gActiveInput.prop('checked', true);
                 
-                gHairCutSelected = $('#g-' + gActiveInput.val());
-                selectHairCut(gHairCutSelected);
+                gCurrentHairCut = $('#g-' + gActiveInput.val());
+                selectHairCut(gCurrentHairCut);
             }
         });
         
@@ -414,11 +397,7 @@
         //select clothes
         var userClothes = $('input[name="user-clothes"]'),
             gClothesArray = $('.g-suit'),
-            mClothesArray = $('.m-suit'),
-            mClothesSelected,
-            gClothesSelected,
-            mClothesItemIndex,
-            gClothesItemIndex;
+            mClothesArray = $('.m-suit');
         
         clothesOwl.on('changed.owl.carousel', function(event) {
             
@@ -427,23 +406,23 @@
             
             if (men) {
                 
-                mClothesItemIndex = event.item.index;
+                mCurrentClothesItemIndex = event.item.index;
                 var mActiveInput = $(activeCarouselItem).find('input');
                 
                 mActiveInput.prop('checked', true);
                 
-                mClothesSelected = $('#m-' + mActiveInput.val());
-                showSelectedItem(mClothesSelected, mClothesArray);
+                mCurrentClothes = $('#m-' + mActiveInput.val());
+                showSelectedItem(mCurrentClothes, mClothesArray);
                 
             } else {
                 
-                gClothesItemIndex = event.item.index;
+                gCurrentClothesItemIndex = event.item.index;
                 var gActiveInput = $(activeCarouselItem).find('input');
                 
                 gActiveInput.prop('checked', true);
                 
-                gClothesSelected = $('#g-' + gActiveInput.val());
-                showSelectedItem(gClothesSelected, gClothesArray);
+                gCurrentClothes = $('#g-' + gActiveInput.val());
+                showSelectedItem(gCurrentClothes, gClothesArray);
                 
             }
         });
@@ -460,9 +439,11 @@
             
             var carouselItems = $(event.target).find('.owl-item'),
                 activeCarouselItem = carouselItems[event.item.index],
-                activeInput = $(activeCarouselItem).find('input'),
-                accessoriesSelected = '#' + activeInput.val();
-            showSelectedItem($(accessoriesSelected), accessoriesArray);
+                activeInput = $(activeCarouselItem).find('input');
+            
+            gCurrentAccessories = $('#' + activeInput.val());
+            
+            showSelectedItem(gCurrentAccessories, accessoriesArray);
         });
 
         
@@ -470,8 +451,6 @@
         
         //hair color selection
         var userHairColor = $('input[name="user-hair-color"]'),
-            mHairColorSelected,
-            gHairColorSelected,
             gLightHairColor = gHairCutsArray.find('.hair-light'),
             gDarkHairColor = gHairCutsArray.find('.hair-dark'),
             mLightHairColor = mHairCutsArray.find('.hair-light'),
@@ -500,11 +479,11 @@
                 hairColorSelectedValues = hairColorObj[hairColorSelected];
             
             if(men) {
-                mHairColorSelected = hairColor;
+                mCurrentHairColor = hairColor;
                 mLightHairColor.css('fill', hairColorSelectedValues.light);
                 mDarkHairColor.css('fill', hairColorSelectedValues.dark);
             } else {
-                gHairColorSelected = hairColor;
+                gCurrentHairColor = hairColor;
                 gLightHairColor.css('fill', hairColorSelectedValues.light);
                 gDarkHairColor.css('fill', hairColorSelectedValues.dark);
             }
@@ -513,16 +492,14 @@
 
         //skin color selection
         var userSkinColor = $('input[name="user-skin-color"]'),
-            mSkinColorSelected,
-            gSkinColorSelected,
             gBody = $('#g-body, #girl-svg .skin-dark'),
             gNeck = $('#g-neck'),
             gFace = $('#girl-svg .skin-light'),
-            gMouth = $('#g-mouth'),
+            gMouth = $('#g-mouth path'),
             mBody = $('#m-body, #men-svg .skin-dark'),
             mNeck = $('#m-neck'),
             mFace = $('#men-svg .skin-light'),
-            mMouth = $('#m-mouth');
+            mMouth = $('#m-mouth path');
         
         //color labels
         userSkinColor.each(function(){
@@ -538,13 +515,13 @@
                 skinColorSelectedValues = skinColorObj[skinColorSelected];
             
             if (men) {
-                mSkinColorSelected = skinColor;
+                mCurrentSkinColor = skinColor;
                 mBody.css('fill', skinColorSelectedValues.body);
                 mNeck.css('fill', skinColorSelectedValues.neck);
                 mFace.css('fill', skinColorSelectedValues.face);
                 mMouth.css('fill', skinColorSelectedValues.mouth);
             } else {
-                gSkinColorSelected = skinColor;
+                gCurrentSkinColor = skinColor;
                 gBody.css('fill', skinColorSelectedValues.body);
                 gNeck.css('fill', skinColorSelectedValues.neck);
                 gFace.css('fill', skinColorSelectedValues.face);
@@ -555,8 +532,6 @@
         
         //glasses selection
         var userGlasses = $('#user-glasses'),
-            mGlasses = false,
-            gGlasses = false,
             glassesNewPath = document.createElementNS('http://www.w3.org/2000/svg',"path");
         
         glassesNewPath.setAttribute('class', 'glasses');
@@ -569,15 +544,15 @@
             
             if (men) {
                 var mGlassesArray = $('#men-svg .glasses');
-                mGlasses = userGlasses.is(':checked') ? false : true;
+                mCurrentGlasses = userGlasses.is(':checked') ? false : true;
                 
-                selectGlasses(mGlasses, $('#men-svg'), mHairArray, mGlassesArray);
+                selectGlasses(mCurrentGlasses, $('#men-svg'), mHairArray, mGlassesArray);
                 
             } else {
                 var gGlassesArray = $('#girl-svg .glasses');
-                gGlasses = userGlasses.is(':checked') ? false : true;
+                gCurrentGlasses = userGlasses.is(':checked') ? false : true;
                 
-                selectGlasses(gGlasses, $('#girl-svg'), gHairArray, gGlassesArray);
+                selectGlasses(gCurrentGlasses, $('#girl-svg'), gHairArray, gGlassesArray);
             }
                    
         })
@@ -600,15 +575,15 @@
         showSelectedItem(mDefaultClothes, mClothesArray);
         
         var mDefaultHairColorValues = hairColorObj[toCamelCase(mDefaultHairColor)],
-            mSkinColorSelectedValues = skinColorObj[toCamelCase(mDefaultSkinColor)];
+            mSkinColorDefaultValues = skinColorObj[toCamelCase(mDefaultSkinColor)];
         
         mLightHairColor.css('fill', mDefaultHairColorValues.light);
         mDarkHairColor.css('fill', mDefaultHairColorValues.dark);
     
-        mBody.css('fill', mSkinColorSelectedValues.body);
-        mNeck.css('fill', mSkinColorSelectedValues.neck);
-        mFace.css('fill', mSkinColorSelectedValues.face);
-        mMouth.css('fill', mSkinColorSelectedValues.mouth);
+        mBody.css('fill', mSkinColorDefaultValues.body);
+        mNeck.css('fill', mSkinColorDefaultValues.neck);
+        mFace.css('fill', mSkinColorDefaultValues.face);
+        mMouth.css('fill', mSkinColorDefaultValues.mouth);
         
         
         //setting default options - Girls
@@ -617,20 +592,70 @@
         showSelectedItem(gDefaultAccessories, accessoriesArray);
         
         var gDefaultHairColorValues = hairColorObj[toCamelCase(gDefaultHairColor)],
-            gSkinColorSelectedValues = skinColorObj[toCamelCase(gDefaultSkinColor)];
+            gSkinColorDefaultValues = skinColorObj[toCamelCase(gDefaultSkinColor)];
         
         gLightHairColor.css('fill', gDefaultHairColorValues.light);
         gDarkHairColor.css('fill', gDefaultHairColorValues.dark);
         
-        gBody.css('fill', gSkinColorSelectedValues.body);
-        gNeck.css('fill', gSkinColorSelectedValues.neck);
-        gFace.css('fill', gSkinColorSelectedValues.face);
-        gMouth.css('fill', gSkinColorSelectedValues.mouth);
+        gBody.css('fill', gSkinColorDefaultValues.body);
+        gNeck.css('fill', gSkinColorDefaultValues.neck);
+        gFace.css('fill', gSkinColorDefaultValues.face);
+        gMouth.css('fill', gSkinColorDefaultValues.mouth);
         
         
         
+        //SAVE AVATAR
+        var saveBtn = $('#save-avatar');
+        
+        saveBtn.on('click', function(){
+            
+            var newAvatar = document.createElementNS('http://www.w3.org/2000/svg',"svg"),
+                avatarNeckNewG = document.createElementNS('http://www.w3.org/2000/svg',"g"),
+                avatarEyesNewG = document.createElementNS('http://www.w3.org/2000/svg',"g"),
+                avatarMouthNewG = document.createElementNS('http://www.w3.org/2000/svg',"g"),
+                avatarHairCutNewG = document.createElementNS('http://www.w3.org/2000/svg',"g"),
+                avatarClothesNewG = document.createElementNS('http://www.w3.org/2000/svg',"g"),
+                avatarAccessoriesNewG = document.createElementNS('http://www.w3.org/2000/svg',"g"),
+                avatarGlassesNewG = document.createElementNS('http://www.w3.org/2000/svg',"g");
+            
+            newAvatar.setAttribute('id', 'avatar');
+            newAvatar.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:xlink", "http://www.w3.org/1999/xlink");
+            newAvatar.setAttribute('viewBox', '0 0 464.001 464.001');
+            
+            if (men) {
+                saveAvatar($('#men-body'), $('#m-eyes'), $('#m-mouth'), mCurrentHairCut, mCurrentClothes, false);
+            } else {
+                console.log(gCurrentAccessories);
+                saveAvatar($('#girl-body'), $('#g-eyes'), $('#g-mouth'), gCurrentHairCut, gCurrentClothes, gCurrentAccessories);
+            }
+            
+            function saveAvatar(body, eyes, mouth, haircut, clothes, accessories) {
+                avatarNeckNewG.innerHTML = body.html();
+                avatarEyesNewG.innerHTML = eyes.html();
+                avatarMouthNewG.innerHTML = mouth.html();
+                avatarHairCutNewG.innerHTML = haircut.html();
+                avatarClothesNewG.innerHTML = clothes.html();
+                
+                newAvatar.appendChild(avatarNeckNewG);
+                newAvatar.appendChild(avatarHairCutNewG);
+                newAvatar.appendChild(avatarEyesNewG);
+                newAvatar.appendChild(avatarMouthNewG);
+                newAvatar.appendChild(avatarClothesNewG);
+                
+                if (accessories) {
+                    avatarAccessoriesNewG.innerHTML = accessories.html();
+                    console.log(accessories);
+                    console.log(accessories);
+                    newAvatar.appendChild(avatarAccessoriesNewG);
 
-        
+                }
+                
+                $('#avatar-wrapper').append(newAvatar);
+            }
+            
+            
+            
+        })
         
         
         

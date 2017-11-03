@@ -1291,6 +1291,18 @@ body {
         -webkit-transform: rotate(45deg) translateX(33%);
                 transform: rotate(45deg) translateX(33%); }
 
+#avatar-wrapper {
+  width: 50px;
+  height: 50px;
+  display: block;
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  padding: 5px;
+  background: #fff;
+  border-radius: 50%;
+  overflow: hidden; }
+
 @media screen and (min-width: 730px) {
   .container {
     width: 100%;
