@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
     
     <link href="https://fonts.googleapis.com/css?family=Poiret+One|Special+Elite|VT323" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
@@ -71,80 +74,192 @@
         
         <div class="page page-1">
             <div class="container">
-                <p>How do you want to look like?</p>
-                
-                <div class="row">
-                    <div class="controls left-side">
+                <div class="row scrolled-parent">
+                    <div class="controls left-side scrolled-child">
+                        <p>How do you want to look like?</p>
+
                        <form action="">
                           
 <!--                          gender-->
-                           <div class="form-field">
-                               <label><input type="radio" name="gender" value="men" checked>Boy</label>
-                               <label><input type="radio" name="gender" value="girl">Girl</label>
+                           <div class="form-field gender-selection">
+                               <input type="radio" id="men" name="gender" value="men" checked>
+                               <label for="men">
+<svg version="1.1" id="gender-boy-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 424.239 424.239" xml:space="preserve">
+<g>
+	<path d="M129.287,245.558c3.906,0,7.578,1.521,10.34,4.283c1.562,1.562,3.609,2.344,5.657,2.343c2.047,0,4.095-0.781,5.657-2.343
+		c3.125-3.124,3.125-8.189,0-11.314c-5.784-5.784-13.474-8.969-21.653-8.969c-8.179,0-15.869,3.185-21.653,8.969
+		c-3.125,3.124-3.125,8.189,0,11.314s8.19,3.124,11.313,0C121.709,247.079,125.381,245.558,129.287,245.558z"/>
+	<path d="M273.298,238.527c-3.125,3.124-3.125,8.189,0,11.314c3.124,3.124,8.189,3.124,11.313,0c5.701-5.702,14.979-5.701,20.68,0
+		c1.562,1.562,3.609,2.343,5.657,2.343s4.095-0.781,5.657-2.343c3.125-3.124,3.125-8.189,0-11.314
+		C304.667,226.588,285.239,226.587,273.298,238.527z"/>
+	<path d="M294.908,317.447c-45.65,45.65-119.927,45.65-165.578,0c-3.124-3.124-8.189-3.124-11.313,0
+		c-3.125,3.124-3.125,8.19,0,11.314c25.944,25.944,60.023,38.916,94.102,38.916c34.08,0,68.159-12.972,94.103-38.916
+		c3.125-3.124,3.125-8.189,0-11.314C303.098,314.323,298.032,314.323,294.908,317.447z"/>
+	<path d="M400.881,254.178c0-21.731-15.71-39.851-36.366-43.63V76.715c0-17.362-8.637-33.458-23.104-43.057
+		c-13.589-9.015-30.457-11.061-45.711-5.686l-50.226-17.048C206.88-2.177,166.255-3.521,127.992,7.036
+		C77.9,20.857,49.182,50.083,44.749,91.627c-3.923,5.174-7.04,10.985-9.158,17.255l-3.896,11.531
+		c-2.091,6.191,0.214,12.697,5.738,16.189c5.523,3.492,12.39,2.786,17.086-1.759c1.604-1.553,3.358-2.861,5.204-3.955v79.66
+		c-20.656,3.779-36.366,21.898-36.366,43.63c0,22.601,16.991,41.296,38.868,44.014c5.494,30.336,19.931,58.319,42.006,80.712
+		c28.821,29.236,67.135,45.336,107.888,45.336c0.005,0,0.01,0,0.015,0c40.701-0.004,78.965-15.856,107.745-44.635
+		c22.481-22.481,37.073-50.749,42.386-81.445C384.02,295.329,400.881,276.691,400.881,254.178z M332.565,46.991
+		c10.137,6.725,15.95,17.559,15.95,29.724v104.689c-24.831-3.859-43.897-25.383-43.897-51.279l-0.662-87.96
+		C313.725,39.59,323.912,41.25,332.565,46.991z M49.195,118.604l1.555-4.601c4.073-12.055,13.118-21.842,24.815-26.85
+		c11.696-5.008,25.021-4.8,36.556,0.573c24.226,11.283,53.513,5.183,71.219-14.833l1.982-2.241
+		c2.928-3.309,2.618-8.365-0.691-11.292c-3.31-2.927-8.366-2.618-11.293,0.691l-1.982,2.241
+		c-13.048,14.75-34.629,19.244-52.48,10.93c-15.653-7.291-33.736-7.574-49.609-0.777c-1.445,0.619-2.85,1.31-4.233,2.033
+		c9.299-24.791,31.805-42.249,67.215-52.019c35.161-9.702,72.535-8.451,108.084,3.615l47.623,16.165l0.624,41.337
+		c-21.205,28.831-52.131,48.348-87.373,55.059c-36.087,6.871-72.901-0.4-103.663-20.474
+		C82.513,108.354,63.562,108.773,49.195,118.604z M39.357,254.178c0-12.863,8.609-23.747,20.366-27.21v43.362
+		c0,3.746,0.135,7.471,0.398,11.172C48.162,278.169,39.357,267.186,39.357,254.178z M308.566,368.29
+		c-25.758,25.758-60.005,39.945-96.433,39.949c-0.006,0-0.007,0-0.014,0c-36.433,0-70.705-14.409-96.494-40.568
+		c-25.731-26.102-39.902-60.672-39.902-97.342V127.116c4.531,0.338,9.027,1.804,13.075,4.445
+		c34.246,22.347,75.228,30.442,115.4,22.792c32.609-6.21,61.903-22.263,84.419-45.938v21.709c0,34.731,26.217,63.437,59.897,67.41
+		v74.308C348.515,308.276,334.328,342.529,308.566,368.29z M364.206,281.476c0.198-3.194,0.309-6.405,0.309-9.633v-44.875
+		c11.757,3.463,20.366,14.347,20.366,27.21C384.881,267.153,376.121,278.114,364.206,281.476z"/>
+</g>
+</svg>
+                               </label>
+                               <input type="radio" id="girl" name="gender" value="girl">
+                               <label for="girl">
+                                
+<svg version="1.1" id="gender-girl-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 421.56 421.56" xml:space="preserve">
+<g>
+	<path d="M238.465,318.516c-15.264,15.264-40.1,15.264-55.363,0c-3.124-3.124-8.189-3.124-11.313,0
+		c-3.125,3.124-3.125,8.189,0,11.313c10.751,10.751,24.873,16.126,38.995,16.126c14.122,0,28.244-5.375,38.995-16.126
+		c3.125-3.124,3.125-8.189,0-11.313C246.655,315.392,241.589,315.392,238.465,318.516z"/>
+	<path d="M391.823,397.883c-18.74-20.752-19.533-73.63-17.315-128.342c8.163-7.667,13.277-18.545,13.277-30.601
+		c0-10.587-3.946-20.264-10.433-27.659c2.726-55.804,4.172-93.122-13.529-127.58c-12.076-23.512-31.616-43.157-58.076-58.389
+		C274.908,7.56,239.73-1.154,204.012,0.123c-31.374,1.118-60.583,15.735-80.725,40.26C97.279,41.93,73.62,56.084,60.891,77.96
+		c-1.093,1.878-2.15,3.809-3.142,5.74c-17.711,34.477-16.266,71.792-13.54,127.59c-6.483,7.394-10.425,17.067-10.425,27.65
+		c0,12.052,5.11,22.927,13.269,30.594c2.218,54.716,1.425,107.598-17.315,128.35c-1.772,1.962-2.46,4.674-1.838,7.244
+		c0.622,2.57,2.474,4.667,4.947,5.602C53.94,418.7,74.368,421.55,92.805,421.55c19.153,0,36.157-3.078,49.506-6.688
+		c23.195-6.272,39.555-15.076,45.137-18.325c7.597,1.252,15.39,1.915,23.336,1.915c7.944,0,15.735-0.662,23.33-1.914
+		c5.583,3.25,21.942,12.052,45.135,18.324c17.807,4.815,34.315,6.698,49.249,6.698c24.877,0,45.382-5.227,60.215-10.832
+		c2.474-0.935,4.325-3.031,4.947-5.602C394.283,402.557,393.595,399.846,391.823,397.883z M353.784,255.453v-39.715
+		c0.002-0.105,0.002-0.211,0-0.317v-1.217c10.433,3.383,18,13.19,18,24.735c0,11.637-7.685,21.513-18.247,24.819
+		C353.695,261.009,353.784,258.242,353.784,255.453z M71.981,91.011c0.865-1.683,1.786-3.367,2.739-5.004
+		c10.537-18.109,30.69-29.513,52.594-29.762c0.025,0,0.085-0.001,0.111-0.002c2.43-0.051,4.704-1.203,6.183-3.131
+		c17.265-22.521,43.134-36.007,70.974-37c32.719-1.167,64.942,6.81,93.181,23.066c23.745,13.669,41.182,31.108,51.826,51.833
+		c14.168,27.58,14.588,57.581,12.265,109.13c-2.572-1.069-5.272-1.886-8.07-2.429v-8.135c0-4.418-3.582-8-8-8s-8,3.582-8,8v18.169
+		c-110.199,1.177-169.855-51.902-185.773-68.509c-1.873-1.954-4.607-2.828-7.263-2.325c-2.659,0.503-4.883,2.316-5.912,4.819
+		c-11.625,28.278-31.936,43.073-63.918,46.559c-4.059,0.442-7.133,3.87-7.133,7.953v1.468c-2.801,0.543-5.504,1.361-8.078,2.432
+		C57.383,148.606,57.806,118.606,71.981,91.011z M68.031,263.759c-10.562-3.306-18.247-13.182-18.247-24.819
+		c0-11.546,7.567-21.353,18-24.735v41.248C67.784,258.242,67.873,261.009,68.031,263.759z M48.488,399.143
+		c14.266-24.35,16.74-64.829,14.926-120.065c2.124,0.656,4.322,1.14,6.574,1.452c9.099,51.227,45.568,93.105,93.695,109.943
+		C140.536,400.433,96.726,413.631,48.488,399.143z M210.784,382.452c-70.028,0-127-56.972-127-127l0.001-52.227
+		c30.003-4.937,51.364-19.707,64.905-44.909c11.526,10.515,30.162,24.936,56.426,37.575c39.49,19.004,84.087,28.377,132.668,27.858
+		v31.703C337.784,325.481,280.812,382.452,210.784,382.452z M283.952,399.558c-10.258-2.742-19.109-6.055-26.096-9.075
+		c48.142-16.83,84.624-58.715,93.725-109.953c2.25-0.312,4.445-0.795,6.567-1.45c-1.815,55.243,0.658,95.722,14.931,120.071
+		C344.826,407.686,314.896,407.83,283.952,399.558z"/>
+	<path d="M115.164,231.744c-3.125,3.124-3.125,8.189,0,11.313c3.124,3.124,8.189,3.124,11.313,0c5.128-5.126,13.47-5.127,18.598,0
+		c1.562,1.562,3.609,2.343,5.657,2.343s4.095-0.781,5.657-2.343c3.125-3.124,3.125-8.189,0-11.313
+		C145.024,220.378,126.529,220.377,115.164,231.744z"/>
+	<path d="M306.405,243.057c3.125-3.124,3.125-8.189,0-11.313c-11.366-11.366-29.86-11.366-41.225,0
+		c-3.125,3.124-3.125,8.189,0,11.313c3.124,3.124,8.189,3.124,11.313,0c5.128-5.127,13.471-5.126,18.598,0
+		c1.562,1.562,3.609,2.343,5.657,2.343S304.843,244.619,306.405,243.057z"/>
+</g>
+</svg>
+
+                               </label>
                            </div>
                            
 <!--                           haircut-->
-                          <div class="form-field horizontal-select owl-carousel hair-cut-select">
+                          <div class="form-field ">
+                            <p>Select haircut</p>
+                             
+                             <div class="horizontal-select owl-carousel hair-cut-select">
+                                 <label><input type="radio" name="user-haircut" value="hair-1" selected>Haircut 1</label>
+                                 <label><input type="radio" name="user-haircut" value="hair-2">Haircut 2</label>
+                                 <label><input type="radio" name="user-haircut" value="hair-3">Haircut 3</label>
+                                 <label><input type="radio" name="user-haircut" value="hair-4">Haircut 4</label>
+                                 <label><input type="radio" name="user-haircut" value="hair-5">Haircut 5</label>
+                                 <label><input type="radio" name="user-haircut" value="hair-6">Haircut 6</label>
+                                 <label><input type="radio" name="user-haircut" value="hair-7">Haircut 7</label>
+                             </div>
 
-                             <label><input type="radio" name="user-haircut" value="hair-1" selected>Haircut 1</label>
-                             <label><input type="radio" name="user-haircut" value="hair-2">Haircut 2</label>
-                             <label><input type="radio" name="user-haircut" value="hair-3">Haircut 3</label>
-                             <label><input type="radio" name="user-haircut" value="hair-4">Haircut 4</label>
-                             <label><input type="radio" name="user-haircut" value="hair-5">Haircut 5</label>
-                             <label><input type="radio" name="user-haircut" value="hair-6">Haircut 6</label>
-                             <label><input type="radio" name="user-haircut" value="hair-7">Haircut 7</label>
+                             
                               
                           </div>
                           
 <!--                          hair color-->
-                          <div class="form-field"> 
-                                                    
-                             <label><input type="radio" name="user-hair-color" value="hair-color-1" checked>Hair color 1</label>
-                             <label><input type="radio" name="user-hair-color" value="hair-color-2">Hair color 2</label>
-                             <label><input type="radio" name="user-hair-color" value="hair-color-3">Hair color 3</label>
-                             <label><input type="radio" name="user-hair-color" value="hair-color-4">Hair color 4</label>
-                             <label><input type="radio" name="user-hair-color" value="hair-color-5">Hair color 5</label>
-                         
+                          <div class="form-field "> 
+                             <p>Select hair color</p>
+                               <div class="color-selection">
+                                   <input id="user-hair-color-1" type="radio" name="user-hair-color" value="hair-color-1" checked>
+                                 <label for="user-hair-color-1"></label>
+                                 <input id="user-hair-color-2" type="radio" name="user-hair-color" value="hair-color-2">
+                                 <label for="user-hair-color-2"></label>
+                                 <input id="user-hair-color-3" type="radio" name="user-hair-color" value="hair-color-3">
+                                 <label for="user-hair-color-3"></label>
+                                 <input id="user-hair-color-4" type="radio" name="user-hair-color" value="hair-color-4">
+                                 <label for="user-hair-color-4"></label>
+                                 <input id="user-hair-color-5" type="radio" name="user-hair-color" value="hair-color-5">
+                                 <label for="user-hair-color-5"></label>
+                               </div>                           
+
                           </div>
                           
 <!--                          skin color-->
-                          <div class="form-field">
-                              <label><input type="radio" name="user-skin-color" value="skin-color-1" checked>Skin 1</label>
-                              <label><input type="radio" name="user-skin-color" value="skin-color-2">Skin 2</label>
-                              <label><input type="radio" name="user-skin-color" value="skin-color-3">Skin 3</label>
-                              <label><input type="radio" name="user-skin-color" value="skin-color-4">Skin 4</label>
+                          <div class="form-field ">
+                                <p>Select skin color</p>
+                                <div class="color-selection">
+                                    <input id="user-skin-color-1" type="radio" name="user-skin-color" value="skin-color-1" checked>
+                                  <label for="user-skin-color-1"></label>
+                                  <input id="user-skin-color-2" type="radio" name="user-skin-color" value="skin-color-2">
+                                  <label for="user-skin-color-2"></label>
+                                  <input id="user-skin-color-3" type="radio" name="user-skin-color" value="skin-color-3">
+                                  <label for="user-skin-color-3"></label>
+                                  <input id="user-skin-color-4" type="radio" name="user-skin-color" value="skin-color-4">
+                                  <label for="user-skin-color-4"></label>
+                                </div>
+                              
                           </div>
                           
 <!--                          outfit-->
-                          <div class="form-field horizontal-select owl-carousel clothes-select">
-
-                             <label><input type="radio" name="user-clothes" value="suit-1" checked>Clothes 1</label>
-                             <label><input type="radio" name="user-clothes" value="suit-2">Clothes 2</label>
-                             <label><input type="radio" name="user-clothes" value="suit-3">Clothes 3</label>
-                             <label><input type="radio" name="user-clothes" value="suit-4">Clothes 4</label>
-                             <label><input type="radio" name="user-clothes" value="suit-5">Clothes 5</label>
-                             <label><input type="radio" name="user-clothes" value="suit-6">Clothes 6</label>
-                             <label><input type="radio" name="user-clothes" value="suit-7">Clothes 7</label>
-                             <label><input type="radio" name="user-clothes" value="suit-8">Clothes 8</label>
+                          <div class="form-field ">
+                           <p>Select clothes</p>
+                            <div class="horizontal-select owl-carousel clothes-select">
+                                <label><input type="radio" name="user-clothes" value="suit-1" checked>Clothes 1</label>
+                                 <label><input type="radio" name="user-clothes" value="suit-2">Clothes 2</label>
+                                 <label><input type="radio" name="user-clothes" value="suit-3">Clothes 3</label>
+                                 <label><input type="radio" name="user-clothes" value="suit-4">Clothes 4</label>
+                                 <label><input type="radio" name="user-clothes" value="suit-5">Clothes 5</label>
+                                 <label><input type="radio" name="user-clothes" value="suit-6">Clothes 6</label>
+                                 <label><input type="radio" name="user-clothes" value="suit-7">Clothes 7</label>
+                                 <label><input type="radio" name="user-clothes" value="suit-8">Clothes 8</label>
+                            </div>
+                             
                              
                           </div>
                           
 <!--                          accessories-->
-                          <div class="form-field horizontal-select owl-carousel accessories-select">
-
-                             <label><input type="radio" name="user-accessories" value="accessories-1" selected>Accessories 1</label>
-                             <label><input type="radio" name="user-accessories" value="accessories-2">Accessories 2</label>
-                             <label><input type="radio" name="user-accessories" value="accessories-3">Accessories 3</label>
-                             <label><input type="radio" name="user-accessories" value="accessories-4">Accessories 4</label>
-                             <label><input type="radio" name="user-accessories" value="accessories-5">Accessories 5</label>
+                          <div class="form-field ">
+                           <p>Select accessories</p>
+                            
+                            <div class="horizontal-select owl-carousel accessories-select">
+                                <label><input type="radio" name="user-accessories" value="accessories-1" selected>Accessories 1</label>
+                                 <label><input type="radio" name="user-accessories" value="accessories-2">Accessories 2</label>
+                                 <label><input type="radio" name="user-accessories" value="accessories-3">Accessories 3</label>
+                                 <label><input type="radio" name="user-accessories" value="accessories-4">Accessories 4</label>
+                                 <label><input type="radio" name="user-accessories" value="accessories-5">Accessories 5</label>
+                            </div>
+                             
                              
                           </div>
                           
                           
 <!--                          glasses-->
-                          <div class="form-field">
-                              <input id="user-glasses" type="checkbox">
-                              <label for="user-glasses" id="glasses-trigger">Glasses</label>
+                          <div class="form-field ">
+                             <p>Glasses</p>
+                              <div class="onoffswitch">
+                                  <input id="user-glasses" type="checkbox" class="onoffswitch-checkbox">
+                                  <label for="user-glasses" id="glasses-trigger" class="onoffswitch-label">
+                                      <span class="onoffswitch-inner"></span>
+                                      <span class="onoffswitch-switch"></span>
+                                  </label>
+                              </div>
                           </div>
                            
                            
@@ -908,7 +1023,7 @@
                         </svg>
                     </div>
                 </div>
-
+                <a class="btn next-btn" href="2">Ready!</a>
             </div>
         </div>
         

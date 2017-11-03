@@ -201,26 +201,26 @@
         
         
         //hair color
-        var hairColorsObj = {
+        var hairColorObj = {
             hairColor1: {
                 light: '#6E4439',
                 dark: '#5E342E'
             },
             hairColor2: {
-                light: '#FF9656',
-                dark: '#EF8C56'
+                light: '#9D6E48',
+                dark: '#8D5F3D'
             },
             hairColor3: {
-                light: '#FFC85C',
-                dark: '#F6B45E'
-            },
-            hairColor4: {
                 light: '#E69F5F',
                 dark: '#E09156'
             },
+            hairColor4: {
+                light: '#FFC85C',
+                dark: '#F6B45E'
+            },
             hairColor5: {
-                light: '#9D6E48',
-                dark: '#8D5F3D'
+                light: '#FF9656',
+                dark: '#EF8C56'
             }
         }
         
@@ -296,7 +296,7 @@
                 userGlasses.prop('checked', mCurrentGlasses);
                 
                 //update sccessories select
-                userAccessories.parents('.accessories-select').hide();
+                userAccessories.parents('.form-field').hide();
                 
                 
             } else if (girl) {
@@ -325,8 +325,8 @@
                 gCurrentGlasses = gGlasses || gDefaultGlasses;
                 userGlasses.prop('checked', gCurrentGlasses);
                 
-                //update sccessories select
-                userAccessories.parents('.accessories-select').show();
+                //update accessories select
+                userAccessories.parents('.form-field').show();
 
             }
             
@@ -454,7 +454,7 @@
             accessoriesArray = $('.accessories');
                 
         //hide accessories select for men on document ready
-        userAccessories.parents('.accessories-select').hide();   
+        userAccessories.parents('.form-field').hide();   
         
         accessoriesOwl.on('changed.owl.carousel', function(event) {
             
@@ -477,13 +477,27 @@
             mLightHairColor = mHairCutsArray.find('.hair-light'),
             mDarkHairColor = mHairCutsArray.find('.hair-dark');
         
+        //color labels
+        userHairColor.each(function(){
+            colorLabels($(this), hairColorObj, 'dark', 'light');
+        });
+        
+        function colorLabels(inputArray, colorsObj, darkColor, lightColor) {
+            var inputValue = toCamelCase(inputArray.val()),
+                colors = colorsObj[inputValue],
+                label = inputArray.next();            
+            label.append('<i class="dark"></i><i class="light"></i>');
+            label.find('.dark').css('background', colors[darkColor]);
+            label.find('.light').css('background', colors[lightColor]);
+        }
+        
         userHairColor.change(function(){
             selectHairColor($(this).val());
         })
         
         function selectHairColor(hairColor) {
             var hairColorSelected = toCamelCase(hairColor),
-                hairColorSelectedValues = hairColorsObj[hairColorSelected];
+                hairColorSelectedValues = hairColorObj[hairColorSelected];
             
             if(men) {
                 mHairColorSelected = hairColor;
@@ -509,6 +523,11 @@
             mNeck = $('#m-neck'),
             mFace = $('#men-svg .skin-light'),
             mMouth = $('#m-mouth');
+        
+        //color labels
+        userSkinColor.each(function(){
+            colorLabels($(this), skinColorObj, 'body', 'neck');
+        });
         
         userSkinColor.change(function(){
             selectSkinColor($(this).val());
@@ -580,7 +599,7 @@
         showSelectedItem(mDefaultHairCut, mHairCutsArray);
         showSelectedItem(mDefaultClothes, mClothesArray);
         
-        var mDefaultHairColorValues = hairColorsObj[toCamelCase(mDefaultHairColor)],
+        var mDefaultHairColorValues = hairColorObj[toCamelCase(mDefaultHairColor)],
             mSkinColorSelectedValues = skinColorObj[toCamelCase(mDefaultSkinColor)];
         
         mLightHairColor.css('fill', mDefaultHairColorValues.light);
@@ -597,7 +616,7 @@
         showSelectedItem(gDefaultClothes, gClothesArray);
         showSelectedItem(gDefaultAccessories, accessoriesArray);
         
-        var gDefaultHairColorValues = hairColorsObj[toCamelCase(gDefaultHairColor)],
+        var gDefaultHairColorValues = hairColorObj[toCamelCase(gDefaultHairColor)],
             gSkinColorSelectedValues = skinColorObj[toCamelCase(gDefaultSkinColor)];
         
         gLightHairColor.css('fill', gDefaultHairColorValues.light);

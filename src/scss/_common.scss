@@ -4,8 +4,8 @@ body, html{
 
 body{
     font-family: 'VT323', monospace;
-    color: white;
-    background: #555;
+    color: $fontColor;
+    background: #607D8B;
     font-size: 24px;
     line-height: 150%;
 }
@@ -75,7 +75,7 @@ body{
 
 .container{
     width: 100%;
-    padding: 20px;
+    padding: 5px;
     margin: 0 auto;
     height: auto;
     min-height: 100%;
@@ -83,17 +83,30 @@ body{
 
 
 .row{
-    display: flex;
-    align-content: space-between;
-    align-items: flex-start;
+    display: block;
 }
 
 .left-side{
-    width: 50%;
+    width: 100%;
+    padding: 0 10px 20px 20px;
 }
 
 .right-side{
-    width: 50%;
+    width: 100%;
+    position: static;
+}
+
+.next-btn{
+    margin-top: 10px;
+}
+
+.scrolled-parent{
+    height: calc(90vh - 75px);
+    overflow: auto;
+    
+    .scrolled-child{
+        height: auto;
+    }
 }
 
 .hidden{
@@ -108,8 +121,8 @@ body{
     appearance: none;
     background: transparent;
     border: 0;
-    border-bottom: 1px solid #fff;
-    color: #fff;
+    border-bottom: 1px solid $fontColor;
+    color: $fontColor;
     font-family: inherit;
     width: 220px;
     font-size: inherit;
@@ -126,21 +139,21 @@ body{
 #custom-form{
     display: none;
     padding: 10px;
-    background: #fff;
+    background: $fontColor;
     color: #333;
     width: 300px;
     max-width: 100%;
 }
 
 .form-field{
-    padding: 10px 0;
+    padding: 13px 0;
 }
 
 .sp-preview{
     border: none;
 }
 .sp-replacer{
-    background: #fff;
+    background: $fontColor;
     border: solid 1px #333;
     
     &:hover, &.sp-active{
@@ -148,11 +161,11 @@ body{
     }
     
     &.sp-active{
-//        border-bottom-color: #fff;
+//        border-bottom-color: $fontColor;
     }
 }
 .sp-container{
-    background-color: #fff;
+    background-color: $fontColor;
     border-color: #333;
 }
 .sp-input-container{
@@ -167,16 +180,17 @@ body{
 
 .btn{
     text-decoration: none;
-    background: $btn-color;
-    color: $base;
-    padding: 5px 20px;
-    border-radius: 15px;
-    box-shadow: 0 5px 0 #FF9800;
+    background: #FF6473;
+    padding: 5px 30px;
+    border-radius: 25px;
+    box-shadow: 0 5px 0 #ff4053;
     transition: position .2s ease;
     position: relative;
+    display: inline-block;
+    color: #fff;
     
     &:hover{
-        background: darken($btn-color, 10%);
+        background: darken($btn-color, 2%);
     }
     
     &:active, &:focus{
@@ -196,17 +210,110 @@ body{
     }
     
     a, a:active, a:focus, a:hover{
-        color: #fff;
+        color: $fontColor;
+    }
+}
+
+.controls{
+    input[type="radio"] {
+        display: none;
+        
+        &:checked + label{
+            box-shadow: 0 0 0 2px $fontColor;
+            
+            svg{
+                fill: $fontColor;
+            }
+        }
+    }
+    
+    label{
+        cursor: pointer;
+    }
+    
+}
+
+.gender-selection{
+    label{
+        display: inline-block;
+        height: 60px;
+        padding: 5px;
+        margin-right: 10px;
+        
+        &:last-child{
+            margin-right: 0;
+        }
+    }
+    
+    svg{
+        width: 50px;
+        fill: #aaa;
+    }
+}
+
+.color-selection{
+    display: flex;
+    justify-content: flex-start;
+    
+    input:checked + label{
+        box-shadow: 0 0 0 2px $fontColor;
+    }
+    
+    label{
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        position: relative;
+        overflow: hidden;
+        margin-right: 10px;
+        
+        &:last-child{
+            margin-right: 0;
+        }
+        
+        i{
+            display: block;
+            width: 100%;
+            height: 100%;
+            
+            &.light{
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 135%;
+                height: 135%;
+                transform: rotate(45deg) translateX(33%);
+            }
+        }
     }
 }
 
 
 //Media queries
 
-//Tablets
-@media screen and (min-width: 767px) {
+//Tablets and horizontal phones
+@media screen and (min-width: 730px) {
     .container{
         width: 100%;
+        padding: 20px;
+    }
+    
+    .row{
+        display: flex;
+        align-content: space-between;
+        align-items: flex-start;
+        position: relative;
+    }
+    
+    .right-side{
+        width: 50%;
+        position: fixed;
+        right: 0;
+        top: 20px;
+    }
+    
+    .left-side{
+        width: 50%;
     }
 }
 
@@ -281,7 +388,7 @@ body{
             transform: translateY(-50%);
             height: 90%;
             width: 1px;
-            background-color: #fff;
+            background-color: $fontColor;
         }
         
         &.waiting{
@@ -331,6 +438,92 @@ body{
 }
 
 
+.onoffswitch {
+    position: relative; width: 82px;
+    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+}
+.onoffswitch-checkbox {
+    display: none;
+}
+.onoffswitch-label {
+    display: block; overflow: hidden; cursor: pointer;
+    border: 2px solid $fontColor; border-radius: 0px;
+}
+.onoffswitch-inner {
+    display: block; width: 200%; margin-left: -100%;
+    transition: margin 0.3s ease-in 0s;
+}
+.onoffswitch-inner:before, .onoffswitch-inner:after {
+    display: block; float: left; width: 50%; height: 30px; padding: 0; line-height: 26px;
+    color: $fontColor;
+    box-sizing: border-box;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+.onoffswitch-inner:before {
+    content: "On";
+    padding-left: 10px;
+    background-color: #00BD5B; color: $fontColor;
+}
+.onoffswitch-inner:after {
+    content: "Off";
+    padding-right: 10px;
+    background-color: #aaa; color: $fontColor;
+    text-align: right;
+}
+.onoffswitch-switch {
+    display: block; width: 40px; margin: 0px;
+    background: $fontColor;
+    position: absolute; top: 0; bottom: 0;
+    right: 42px;
+    transition: all 0.3s ease-in 0s; 
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+    margin-left: 0;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+    right: 0px; 
+}
+
+
+
+
+//////// PAGE 1
+.page-1{
+    .container{
+        text-align: center;
+    }
+    
+    .row{
+        text-align: left;
+    }
+}
+
+
+
+//Tablets and horizontal phones
+@media screen and (min-width: 730px) {
+    
+    .page-1{
+        .container{
+            text-align: left;
+        }
+        
+        .scrolled-parent {
+            height: calc(90vh - 96px);
+        }
+    }
+}
+
+
+@media screen and (min-height: 800px) {
+    .right-side {
+    width: 50%;
+    position: fixed;
+    right: 30px;
+    top: 70px;
+}
+}
 
 
 
