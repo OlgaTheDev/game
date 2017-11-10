@@ -16,14 +16,12 @@
 
     function splitIntoLetters(str) {
         var lettersArray = str.text().split('');
-        console.log(lettersArray);
 
         for (var i in lettersArray){
             lettersArray[i] = '<i>' + lettersArray[i] + '</i>';
         }
 
         var newLetters = lettersArray.join('');
-        console.log(newLetters);
         str.html(newLetters).css('opacity', 1);
     }
 
@@ -165,12 +163,6 @@
         
         //AVATAR CUSTOMIZATION
         
-        //functions
-        function showSelectedItem(elem, arr){
-            arr.removeClass('visible').addClass('hidden');
-            elem.removeClass('hidden').addClass('visible');
-        }
-        
         //skin color
         var skinColorObj = { 
             skinColor1: {
@@ -224,21 +216,221 @@
             }
         }
         
-        //default options - Girls
-        var gDefaultSkinColor = 'skin-color-1',
-            gDefaultHairColor = 'hair-color-1',
-            gDefaultHairCut = $('#g-hair-1'),
-            gDefaultClothes = $('#g-suit-1'),
-            gDefaultGlasses = false,
-            gDefaultAccessories = $('#accessories-1');
         
-        //default options - Men
-        var mDefaultSkinColor = 'skin-color-1',
-            mDefaultHairColor = 'hair-color-1',
-            mDefaultHairCut = $('#m-hair-1'),
-            mDefaultClothes = $('#m-suit-1'),
-            mDefaultGlasses = false;
+        function Avatar() {
+            var self = this;
+            
+            var currentHairCut,
+                hairCutIndex = 0,
+                hairCutsArray,
+                
+                currentClothes,
+                clothesArray,
+                clothesIndex = 0,
+                
+                accessoriesArray,
+                currentAccessories,
+
+                currentHairColor,
+                lightHairColor,
+                darkHairColor,
+                
+                currentSkinColor,
+                avatarSvg,
+                bodySvg,
+                neckSvg,
+                faceSvg,
+                mouthSvg,
+
+                currentGlasses,
+                glassesArray;
+            
+            function showSelectedItem (elem, arr){
+                if (elem && arr) {
+                    arr.removeClass('visible').addClass('hidden');
+                    elem.removeClass('hidden').addClass('visible');
+                }
+            }
+            
+            self.setAvatarSvg = function (svg) {
+                if (svg) {
+                    avatarSvg = svg;
+                }
+            }
+            
+            //haircut
+            self.hairCut = function (haircut) {
+                if (!arguments.length) {
+                    return currentHairCut;
+                }
+                
+                currentHairCut = haircut;
+                hairCutsArray = avatarSvg.find('.hair');
+                showSelectedItem(currentHairCut, hairCutsArray)
+            };
+            
+            self.hairCutIndex = function (index) {
+                if (!arguments.length) {
+                    return hairCutIndex;
+                }
+                
+                hairCutIndex = index;
+            };
+            
+            //clothes            
+            self.clothes = function (clothes) {
+                if (!arguments.length) {
+                    return currentClothes;
+                }
+                
+                currentClothes = clothes;
+                clothesArray = avatarSvg.find('.suit');
+                showSelectedItem(currentClothes, clothesArray);
+            };
+            
+            self.clothesIndex = function (index) {
+                if (!arguments.length) {
+                    return clothesIndex;
+                }
+                
+                clothesIndex = index;
+            };
+            
+            //accessories
+            self.accessories = function (accessories) {
+                if (!arguments.length) {
+                    return currentAccessories;
+                }
+                
+                currentAccessories = accessories;
+                accessoriesArray = avatarSvg.find('.accessories');
+                showSelectedItem(currentAccessories, accessoriesArray);
+            }
+            
+            function selectHairColor(hairColor) {
+                var hairColorSelected = toCamelCase(hairColor),
+                    hairColorSelectedValues = hairColorObj[hairColorSelected];
+                
+                lightHairColor = hairCutsArray.find('.hair-light');
+                darkHairColor = hairCutsArray.find('.hair-dark');
+                
+                lightHairColor.css('fill', hairColorSelectedValues.light);
+                darkHairColor.css('fill', hairColorSelectedValues.dark);
+
+            }
+            
+            //hair color
+            self.hairColor = function (haircolor) {
+                if (!arguments.length) {
+                    return currentHairColor;
+                }
+                
+                currentHairColor = haircolor;
+                selectHairColor(currentHairColor);
+            }
+            
+            //skin color
+            self.skinColor = function (skinColor) {
+                if (!arguments.length) {
+                    return currentSkinColor;
+                }
+                                
+                currentSkinColor = skinColor;
+                
+                var skinColorSelected = toCamelCase(currentSkinColor),
+                    skinColorSelectedValues = skinColorObj[skinColorSelected];
+                
+                bodySvg = avatarSvg.find('.body-svg, .skin-dark');
+                neckSvg = avatarSvg.find('.neck-svg');
+                mouthSvg = avatarSvg.find('.mouth path');
+                faceSvg = avatarSvg.find('.skin-light');
+                
+                bodySvg.css('fill', skinColorSelectedValues.body);
+                neckSvg.css('fill', skinColorSelectedValues.neck);
+                faceSvg.css('fill', skinColorSelectedValues.face);
+                mouthSvg.css('fill', skinColorSelectedValues.mouth);
+                
+            }
+            
+            //glasses
+            function selectGlasses(glasses, hairArray, glassesArr) {
+                if (glasses) {
+                    avatarSvg.find('.skin-dark').after(glassesNewPath);
+                } else {
+                    if (glassesArr.length) {
+                        for (var i = 0; i < hairArray.length; i++) {
+                            hairArray[i].removeChild(glassesArr[i]);
+                        }
+                    }
+                }
+            }
+            
+            self.glasses = function (curGlasses) {
+                if (!arguments.length) {
+                    return currentGlasses;
+                }
+                
+                currentGlasses = curGlasses;
+                glassesArray = avatarSvg.find('.glasses');
+                
+                selectGlasses(currentGlasses, hairCutsArray, glassesArray);
+            }        
+            
+            //save
+            self.saveAvatar = function () {
+                var newAvatar = document.createElementNS('http://www.w3.org/2000/svg',"svg"),
+                    avatarNeckNewG = document.createElementNS('http://www.w3.org/2000/svg',"g"),
+                    avatarEyesNewG = document.createElementNS('http://www.w3.org/2000/svg',"g"),
+                    avatarMouthNewG = document.createElementNS('http://www.w3.org/2000/svg',"g"),
+                    avatarHairCutNewG = document.createElementNS('http://www.w3.org/2000/svg',"g"),
+                    avatarClothesNewG = document.createElementNS('http://www.w3.org/2000/svg',"g"),
+                    avatarAccessoriesNewG = document.createElementNS('http://www.w3.org/2000/svg',"g"),
+                    avatarGlassesNewG = document.createElementNS('http://www.w3.org/2000/svg',"g");
+                
+                newAvatar.setAttribute('id', 'avatar');
+                newAvatar.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:xlink", "http://www.w3.org/1999/xlink");
+                newAvatar.setAttribute('viewBox', '0 0 464.001 464.001');
+
+                newAvatar.appendChild(avatarNeckNewG);
+                newAvatar.appendChild(avatarHairCutNewG);
+                newAvatar.appendChild(avatarEyesNewG);
+                newAvatar.appendChild(avatarMouthNewG);
+                newAvatar.appendChild(avatarClothesNewG);
+                
+                avatarNeckNewG.innerHTML = avatarSvg.find('.avatar-body').html();
+                avatarEyesNewG.innerHTML = avatarSvg.find('.eyes').html();
+                avatarMouthNewG.innerHTML = avatarSvg.find('.mouth').html();
+                avatarHairCutNewG.innerHTML = currentHairCut.html();
+                avatarClothesNewG.innerHTML = currentClothes.html();
+                
+                if (currentAccessories) {
+                    avatarAccessoriesNewG.innerHTML = currentAccessories.html();
+                    newAvatar.appendChild(avatarAccessoriesNewG);
+                }
+                
+                $('#avatar-wrapper').append(newAvatar);
+            }
+                            
+        }
         
+        
+        var boyAvatar = new Avatar();
+        boyAvatar.setAvatarSvg($('#men-svg'));
+        boyAvatar.hairCut($('#m-hair-1'));
+        boyAvatar.clothes($('#m-suit-1'));
+        boyAvatar.hairColor('hair-color-1');
+        boyAvatar.skinColor('skin-color-1');
+        boyAvatar.glasses(false);
+
+
+        var girlAvatar = new Avatar();
+        girlAvatar.setAvatarSvg($('#girl-svg'));
+        girlAvatar.hairCut($('#g-hair-1'));
+        girlAvatar.clothes($('#g-suit-1'));
+        girlAvatar.accessories($('#accessories-1'));
+        girlAvatar.hairColor('hair-color-1');
+        girlAvatar.skinColor('skin-color-1');
+        girlAvatar.glasses(false);
         
         
         //gender
@@ -249,22 +441,8 @@
                 
             
         //gender selection
-        var userGender = $('input[name="gender"]'),
-            mCurrentHairCut = mDefaultHairCut,
-            gCurrentHairCut = gDefaultHairCut,
-            mCurrentHairColor = mDefaultHairColor,
-            gCurrentHairColor = gDefaultHairColor,
-            mCurrentSkinColor = mDefaultSkinColor,
-            gCurrentSkinColor = gDefaultSkinColor,
-            mCurrentClothes = mDefaultClothes,
-            gCurrentClothes = gDefaultClothes,
-            mCurrentGlasses = mDefaultGlasses,
-            gCurrentGlasses = gDefaultGlasses,
-            mCurrentHairCutIndex = 0,
-            gCurrentHairCutIndex = 0,
-            mCurrentClothesItemIndex = 0,
-            gCurrentClothesItemIndex = 0,
-            gCurrentAccessories = gDefaultAccessories;
+        var userGender = $('input[name="gender"]');
+
 
         userGender.change(function() {
             
@@ -273,21 +451,21 @@
             if (men) {
                 
                 // update select for hair cut
-                userHairCut.val([mCurrentHairCut.attr('id').slice(2)]);
-                hairCutOwl.trigger('to.owl.carousel', [mCurrentHairCutIndex]);
+                userHairCut.val([boyAvatar.hairCut().attr('id').slice(2)]);
+                hairCutOwl.trigger('to.owl.carousel', [boyAvatar.hairCutIndex()]);
                 
                 // update select for hair color
-                userHairColor.val([mCurrentHairColor]);
+                userHairColor.val([boyAvatar.hairColor()]);
                 
                 //update select for skin color
-                userSkinColor.val([mCurrentSkinColor]);
+                userSkinColor.val([boyAvatar.skinColor()]);
                 
                 //update select for clothes
-                userClothes.val([mCurrentClothes.attr('id').slice(2)]);
-                clothesOwl.trigger('to.owl.carousel', [mCurrentClothesItemIndex]);
+                userClothes.val([boyAvatar.clothes().attr('id').slice(2)]);
+                clothesOwl.trigger('to.owl.carousel', [boyAvatar.clothesIndex()]);
                 
                 //update glasses
-                userGlasses.prop('checked', mCurrentGlasses);
+                userGlasses.prop('checked', boyAvatar.glasses());
                 
                 //update sccessories select
                 userAccessories.parents('.form-field').hide();
@@ -296,21 +474,21 @@
             } else if (girl) {
                 
                 // update select & carousel for hair cut
-                userHairCut.val([gCurrentHairCut.attr('id').slice(2)]);
-                hairCutOwl.trigger('to.owl.carousel', [gCurrentHairCutIndex]);
+                userHairCut.val([girlAvatar.hairCut().attr('id').slice(2)]);
+                hairCutOwl.trigger('to.owl.carousel', [girlAvatar.hairCutIndex()]);
 
                 // update select for hair color
-                userHairColor.val([gCurrentHairColor]);
+                userHairColor.val([girlAvatar.hairColor()]);
                 
                 //update select for skin color
-                userSkinColor.val([gCurrentSkinColor]);
+                userSkinColor.val([girlAvatar.skinColor()]);
                 
                 //update select for clothes
-                userClothes.val([gCurrentClothes.attr('id').slice(2)]);
-                clothesOwl.trigger('to.owl.carousel', [gCurrentClothesItemIndex]);
+                userClothes.val([girlAvatar.clothes().attr('id').slice(2)]);
+                clothesOwl.trigger('to.owl.carousel', [girlAvatar.clothesIndex()]);
                 
                 //update glasses
-                userGlasses.prop('checked', gCurrentGlasses);
+                userGlasses.prop('checked', girlAvatar.glasses());
                 
                 //update accessories select
                 userAccessories.parents('.form-field').show();
@@ -322,13 +500,13 @@
         
         function detectGender(gender) {
             if (gender == 'men') {
-                menSvg.css('display', 'block');
-                girlSvg.css('display', 'none');
+                menSvg.show();
+                girlSvg.hide();
                 men = true;
                 girl = false;
             } else {
-                menSvg.css('display', 'none');
-                girlSvg.css('display', 'block');
+                menSvg.hide();
+                girlSvg.show();
                 men = false;
                 girl = true;
             }
@@ -355,9 +533,7 @@
         
         
         //select haircut
-        var userHairCut = $('input[name="user-haircut"]'),
-            mHairCutsArray = $('.m-hair'),
-            gHairCutsArray = $('.g-hair');
+        var userHairCut = $('input[name="user-haircut"]');
         
         hairCutOwl.on('changed.owl.carousel', function(event) {
             
@@ -365,39 +541,26 @@
                 activeCarouselItem = carouselItems[event.item.index];
 
             if (men) {
-                mCurrentHairCutIndex = event.item.index;
+                boyAvatar.hairCutIndex(event.item.index);
                 var mActiveInput = $(activeCarouselItem).find('input');
                 
                 mActiveInput.prop('checked', true);
                 
-                mCurrentHairCut = $('#m-' + mActiveInput.val());
-                selectHairCut(mCurrentHairCut);
+                boyAvatar.hairCut($('#m-' + mActiveInput.val()));
                 
             } else {
-                gCurrentHairCutIndex = event.item.index;
+                girlAvatar.hairCutIndex(event.item.index);
                 var gActiveInput = $(activeCarouselItem).find('input');
                 
                 gActiveInput.prop('checked', true);
                 
-                gCurrentHairCut = $('#g-' + gActiveInput.val());
-                selectHairCut(gCurrentHairCut);
+                girlAvatar.hairCut($('#g-' + gActiveInput.val()));
             }
         });
         
-        function selectHairCut(hairCut) {
-            if (men){
-                showSelectedItem(hairCut, mHairCutsArray);
-
-            } else {
-                showSelectedItem(hairCut, gHairCutsArray);
-            }
-        }
-        
         
         //select clothes
-        var userClothes = $('input[name="user-clothes"]'),
-            gClothesArray = $('.g-suit'),
-            mClothesArray = $('.m-suit');
+        var userClothes = $('input[name="user-clothes"]');
         
         clothesOwl.on('changed.owl.carousel', function(event) {
             
@@ -406,33 +569,30 @@
             
             if (men) {
                 
-                mCurrentClothesItemIndex = event.item.index;
+                boyAvatar.clothesIndex(event.item.index);
                 var mActiveInput = $(activeCarouselItem).find('input');
                 
                 mActiveInput.prop('checked', true);
                 
-                mCurrentClothes = $('#m-' + mActiveInput.val());
-                showSelectedItem(mCurrentClothes, mClothesArray);
+                boyAvatar.clothes($('#m-' + mActiveInput.val()));
                 
             } else {
                 
-                gCurrentClothesItemIndex = event.item.index;
+                girlAvatar.clothesIndex(event.item.index);
                 var gActiveInput = $(activeCarouselItem).find('input');
                 
                 gActiveInput.prop('checked', true);
                 
-                gCurrentClothes = $('#g-' + gActiveInput.val());
-                showSelectedItem(gCurrentClothes, gClothesArray);
+                girlAvatar.clothes($('#g-' + gActiveInput.val()));
                 
             }
         });
     
         
         //select accessories
-        var userAccessories = $('input[name="user-accessories"]'),
-            accessoriesArray = $('.accessories');
+        var userAccessories = $('input[name="user-accessories"]');
                 
-        //hide accessories select for men on document ready
+        //hide accessories select for boy on document ready
         userAccessories.parents('.form-field').hide();   
         
         accessoriesOwl.on('changed.owl.carousel', function(event) {
@@ -441,20 +601,14 @@
                 activeCarouselItem = carouselItems[event.item.index],
                 activeInput = $(activeCarouselItem).find('input');
             
-            gCurrentAccessories = $('#' + activeInput.val());
-            
-            showSelectedItem(gCurrentAccessories, accessoriesArray);
+            girlAvatar.accessories($('#' + activeInput.val()));            
         });
 
         
         //FEATURS THAT DOESN'T USE CAROUSEL 
         
         //hair color selection
-        var userHairColor = $('input[name="user-hair-color"]'),
-            gLightHairColor = gHairCutsArray.find('.hair-light'),
-            gDarkHairColor = gHairCutsArray.find('.hair-dark'),
-            mLightHairColor = mHairCutsArray.find('.hair-light'),
-            mDarkHairColor = mHairCutsArray.find('.hair-dark');
+        var userHairColor = $('input[name="user-hair-color"]');
         
         //color labels
         userHairColor.each(function(){
@@ -471,35 +625,16 @@
         }
         
         userHairColor.change(function(){
-            selectHairColor($(this).val());
-        })
-        
-        function selectHairColor(hairColor) {
-            var hairColorSelected = toCamelCase(hairColor),
-                hairColorSelectedValues = hairColorObj[hairColorSelected];
-            
-            if(men) {
-                mCurrentHairColor = hairColor;
-                mLightHairColor.css('fill', hairColorSelectedValues.light);
-                mDarkHairColor.css('fill', hairColorSelectedValues.dark);
+            if (men) {
+                boyAvatar.hairColor($(this).val());
             } else {
-                gCurrentHairColor = hairColor;
-                gLightHairColor.css('fill', hairColorSelectedValues.light);
-                gDarkHairColor.css('fill', hairColorSelectedValues.dark);
+                girlAvatar.hairColor($(this).val());
             }
-        }
+        })
         
 
         //skin color selection
-        var userSkinColor = $('input[name="user-skin-color"]'),
-            gBody = $('#g-body, #girl-svg .skin-dark'),
-            gNeck = $('#g-neck'),
-            gFace = $('#girl-svg .skin-light'),
-            gMouth = $('#g-mouth path'),
-            mBody = $('#m-body, #men-svg .skin-dark'),
-            mNeck = $('#m-neck'),
-            mFace = $('#men-svg .skin-light'),
-            mMouth = $('#m-mouth path');
+        var userSkinColor = $('input[name="user-skin-color"]');
         
         //color labels
         userSkinColor.each(function(){
@@ -507,27 +642,12 @@
         });
         
         userSkinColor.change(function(){
-            selectSkinColor($(this).val());
-        })
-        
-        function selectSkinColor(skinColor) {
-            var skinColorSelected = toCamelCase(skinColor),
-                skinColorSelectedValues = skinColorObj[skinColorSelected];
-            
             if (men) {
-                mCurrentSkinColor = skinColor;
-                mBody.css('fill', skinColorSelectedValues.body);
-                mNeck.css('fill', skinColorSelectedValues.neck);
-                mFace.css('fill', skinColorSelectedValues.face);
-                mMouth.css('fill', skinColorSelectedValues.mouth);
-            } else {
-                gCurrentSkinColor = skinColor;
-                gBody.css('fill', skinColorSelectedValues.body);
-                gNeck.css('fill', skinColorSelectedValues.neck);
-                gFace.css('fill', skinColorSelectedValues.face);
-                gMouth.css('fill', skinColorSelectedValues.mouth);
+                boyAvatar.skinColor($(this).val());
+            } else{
+                girlAvatar.skinColor($(this).val());
             }
-        }
+        });
              
         
         //glasses selection
@@ -538,123 +658,33 @@
         glassesNewPath.setAttribute('d', 'M347,156h-83c-6.617,0-12,5.383-12,12v0.432c-5.086-5.198-12.172-8.432-20-8.432   s-14.914,3.234-20,8.432V168c0-6.617-5.383-12-12-12h-83c-2.209,0-4,1.791-4,4s1.791,4,4,4h23.7c-0.445,1.253-0.7,2.596-0.7,4v24   c0,6.617,5.383,12,12,12h48c6.617,0,12-5.383,12-12v-4c0-11.027,8.973-20,20-20s20,8.973,20,20v4c0,6.617,5.383,12,12,12h48   c6.617,0,12-5.383,12-12v-24c0-1.404-0.255-2.747-0.7-4H347c2.209,0,4-1.791,4-4S349.209,156,347,156z M204,192   c0,2.203-1.793,4-4,4h-48c-2.207,0-4-1.797-4-4v-24c0-2.203,1.793-4,4-4h48c2.207,0,4,1.797,4,4V192z M316,168v24   c0,2.203-1.793,4-4,4h-48c-2.207,0-4-1.797-4-4v-24c0-2.203,1.793-4,4-4h48C314.207,164,316,165.797,316,168z');
         glassesNewPath.setAttribute('fill', '#734A3E');
         
+        
         $('#glasses-trigger').click(function(){
-            var gHairArray = $('.g-hair'),
-                mHairArray = $('.m-hair');
             
             if (men) {
-                var mGlassesArray = $('#men-svg .glasses');
-                mCurrentGlasses = userGlasses.is(':checked') ? false : true;
-                
-                selectGlasses(mCurrentGlasses, $('#men-svg'), mHairArray, mGlassesArray);
+                var mCurrentGlasses = userGlasses.is(':checked') ? false : true;
+                boyAvatar.glasses(mCurrentGlasses);
                 
             } else {
-                var gGlassesArray = $('#girl-svg .glasses');
-                gCurrentGlasses = userGlasses.is(':checked') ? false : true;
-                
-                selectGlasses(gCurrentGlasses, $('#girl-svg'), gHairArray, gGlassesArray);
+                var gCurrentGlasses = userGlasses.is(':checked') ? false : true;
+                girlAvatar.glasses(gCurrentGlasses);
+
             }
                    
         })
-        
-        function selectGlasses(glasses, personSvg, hairArray, glassesArray) {
-            if (glasses) {
-                    personSvg.find('.skin-dark').after(glassesNewPath);
-                } else {
-                    for (var i = 0; i < hairArray.length; i++) {
-                        hairArray[i].removeChild(glassesArray[i]);
-                    }
-                }
-        }
-        
-        
-        //DEFAULTS
-        
-        //setting default options - Men
-        showSelectedItem(mDefaultHairCut, mHairCutsArray);
-        showSelectedItem(mDefaultClothes, mClothesArray);
-        
-        var mDefaultHairColorValues = hairColorObj[toCamelCase(mDefaultHairColor)],
-            mSkinColorDefaultValues = skinColorObj[toCamelCase(mDefaultSkinColor)];
-        
-        mLightHairColor.css('fill', mDefaultHairColorValues.light);
-        mDarkHairColor.css('fill', mDefaultHairColorValues.dark);
-    
-        mBody.css('fill', mSkinColorDefaultValues.body);
-        mNeck.css('fill', mSkinColorDefaultValues.neck);
-        mFace.css('fill', mSkinColorDefaultValues.face);
-        mMouth.css('fill', mSkinColorDefaultValues.mouth);
-        
-        
-        //setting default options - Girls
-        showSelectedItem(gDefaultHairCut, gHairCutsArray);
-        showSelectedItem(gDefaultClothes, gClothesArray);
-        showSelectedItem(gDefaultAccessories, accessoriesArray);
-        
-        var gDefaultHairColorValues = hairColorObj[toCamelCase(gDefaultHairColor)],
-            gSkinColorDefaultValues = skinColorObj[toCamelCase(gDefaultSkinColor)];
-        
-        gLightHairColor.css('fill', gDefaultHairColorValues.light);
-        gDarkHairColor.css('fill', gDefaultHairColorValues.dark);
-        
-        gBody.css('fill', gSkinColorDefaultValues.body);
-        gNeck.css('fill', gSkinColorDefaultValues.neck);
-        gFace.css('fill', gSkinColorDefaultValues.face);
-        gMouth.css('fill', gSkinColorDefaultValues.mouth);
-        
         
         
         //SAVE AVATAR
         var saveBtn = $('#save-avatar');
         
         saveBtn.on('click', function(){
-            
-            var newAvatar = document.createElementNS('http://www.w3.org/2000/svg',"svg"),
-                avatarNeckNewG = document.createElementNS('http://www.w3.org/2000/svg',"g"),
-                avatarEyesNewG = document.createElementNS('http://www.w3.org/2000/svg',"g"),
-                avatarMouthNewG = document.createElementNS('http://www.w3.org/2000/svg',"g"),
-                avatarHairCutNewG = document.createElementNS('http://www.w3.org/2000/svg',"g"),
-                avatarClothesNewG = document.createElementNS('http://www.w3.org/2000/svg',"g"),
-                avatarAccessoriesNewG = document.createElementNS('http://www.w3.org/2000/svg',"g"),
-                avatarGlassesNewG = document.createElementNS('http://www.w3.org/2000/svg',"g");
-            
-            newAvatar.setAttribute('id', 'avatar');
-            newAvatar.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:xlink", "http://www.w3.org/1999/xlink");
-            newAvatar.setAttribute('viewBox', '0 0 464.001 464.001');
-            
+                        
             if (men) {
-                saveAvatar($('#men-body'), $('#m-eyes'), $('#m-mouth'), mCurrentHairCut, mCurrentClothes, false);
+                boyAvatar.saveAvatar();
             } else {
-                console.log(gCurrentAccessories);
-                saveAvatar($('#girl-body'), $('#g-eyes'), $('#g-mouth'), gCurrentHairCut, gCurrentClothes, gCurrentAccessories);
+                girlAvatar.saveAvatar();
             }
-            
-            function saveAvatar(body, eyes, mouth, haircut, clothes, accessories) {
-                avatarNeckNewG.innerHTML = body.html();
-                avatarEyesNewG.innerHTML = eyes.html();
-                avatarMouthNewG.innerHTML = mouth.html();
-                avatarHairCutNewG.innerHTML = haircut.html();
-                avatarClothesNewG.innerHTML = clothes.html();
-                
-                newAvatar.appendChild(avatarNeckNewG);
-                newAvatar.appendChild(avatarHairCutNewG);
-                newAvatar.appendChild(avatarEyesNewG);
-                newAvatar.appendChild(avatarMouthNewG);
-                newAvatar.appendChild(avatarClothesNewG);
-                
-                if (accessories) {
-                    avatarAccessoriesNewG.innerHTML = accessories.html();
-                    console.log(accessories);
-                    console.log(accessories);
-                    newAvatar.appendChild(avatarAccessoriesNewG);
-
-                }
-                
-                $('#avatar-wrapper').append(newAvatar);
-            }
-            
-            
-            
+         
         })
         
         
