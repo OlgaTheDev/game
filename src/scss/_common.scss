@@ -4,7 +4,7 @@ body, html{
 
 body{
     font-family: 'VT323', monospace;
-    color: $fontColor;
+    color: $font-color;
     background: #607D8B;
     font-size: 24px;
     line-height: 150%;
@@ -16,7 +16,7 @@ body{
 
 .page {
     width: 90vw;
-    height: 90vh;
+    height: 80vh;
     position: absolute;
     top: 20px;
     left: 0;
@@ -121,8 +121,8 @@ body{
     appearance: none;
     background: transparent;
     border: 0;
-    border-bottom: 1px solid $fontColor;
-    color: $fontColor;
+    border-bottom: 1px solid $font-color;
+    color: $font-color;
     font-family: inherit;
     width: 220px;
     font-size: inherit;
@@ -139,7 +139,7 @@ body{
 #custom-form{
     display: none;
     padding: 10px;
-    background: $fontColor;
+    background: $font-color;
     color: #333;
     width: 300px;
     max-width: 100%;
@@ -153,7 +153,7 @@ body{
     border: none;
 }
 .sp-replacer{
-    background: $fontColor;
+    background: $font-color;
     border: solid 1px #333;
     
     &:hover, &.sp-active{
@@ -161,11 +161,11 @@ body{
     }
     
     &.sp-active{
-//        border-bottom-color: $fontColor;
+//        border-bottom-color: $font-color;
     }
 }
 .sp-container{
-    background-color: $fontColor;
+    background-color: $font-color;
     border-color: #333;
 }
 .sp-input-container{
@@ -181,21 +181,36 @@ body{
 .btn{
     text-decoration: none;
     background: #FF6473;
-    padding: 5px 30px;
-    border-radius: 25px;
+    padding: 5px 15px;
+    border-radius: 15px;
     box-shadow: 0 5px 0 #ff4053;
     transition: position .2s ease;
     position: relative;
     display: inline-block;
     color: #fff;
+    appearance: none;
+    border: none;
+    font-family: inherit;
+    font-size: inherit;
+    display: inline-block;
+    cursor: pointer;
     
     &:hover{
         background: darken($btn-color, 2%);
     }
     
-    &:active, &:focus{
+    &:active{
         box-shadow: none;
         bottom: -5px;
+        outline: none;
+    }
+    
+    &:focus{
+        outline: none;
+    }
+    
+    &.disable{
+        visibility: hidden;
     }
 }
 
@@ -210,8 +225,18 @@ body{
     }
     
     a, a:active, a:focus, a:hover{
-        color: $fontColor;
+        color: $font-color;
     }
+}
+
+.page-controls{
+    position: absolute;
+    bottom: 40px;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 5vw;
 }
 
 .controls{
@@ -219,10 +244,10 @@ body{
         display: none;
         
         &:checked + label{
-            box-shadow: 0 0 0 2px $fontColor;
+            box-shadow: 0 0 0 2px $font-color;
             
             svg{
-                fill: $fontColor;
+                fill: $font-color;
             }
         }
     }
@@ -256,7 +281,7 @@ body{
     justify-content: flex-start;
     
     input:checked + label{
-        box-shadow: 0 0 0 2px $fontColor;
+        box-shadow: 0 0 0 2px $font-color;
     }
     
     label{
@@ -302,6 +327,71 @@ body{
     overflow: hidden;
 }
 
+#ice-cream-to-color{
+    height: 100%;
+    margin: 0 auto;
+    display: block;
+    
+    path, ellipse, polygon{
+        stroke: $font-color;
+        stroke-width: 2px;
+        fill: white;
+    }
+}
+
+.page-2{
+    .container{
+        position: relative;
+    }
+    
+    .picture{
+        height: 50vh;
+    }
+    
+    .pencils-wrapper{
+        height: 15vh;
+        width: 100%;
+        display: flex;
+        overflow: hidden;
+        justify-content: center;
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        
+        a{
+            display: block;
+            height: 100%;
+            margin-top: 22px;
+            transition: .3s ease;
+            
+            &:focus{
+                outline: none;
+            }
+            
+            &.active{
+                margin-top: 0;
+            }
+        }
+        
+        svg{
+            max-width: 100%;
+            height: 200%;
+            transform: rotate(180deg);
+            
+            &:focus{
+                outline: none;
+            }
+            
+            path{
+                stroke: $font-color;
+                stroke-width: 2px;
+                fill: white;
+            }
+        }
+    }
+}
+
 
 //Media queries
 
@@ -317,6 +407,14 @@ body{
         align-content: space-between;
         align-items: flex-start;
         position: relative;
+    }
+    
+    .page-2{
+        
+        .row{
+            display: block;
+            position: static;
+        }
     }
     
     .right-side{
@@ -340,6 +438,24 @@ body{
 //    .page{
 //        width: 90%;
 //    }
+    
+    .page-2{
+        
+        .pencils-wrapper{
+            left: 0;
+            top: 0;
+            height: 100%;
+            
+            a{
+                transform: rotate(90deg);
+            }
+        }
+        
+        .picture{
+            height: 60vh;
+            margin-top: 5vh;
+        }
+    }
 }
 
 
@@ -364,6 +480,17 @@ body{
 	animation: rotateCubeLeftIn 1s both ease-in;
 }
 
+.page-rotateCubeRightOut {
+	transform-origin: 0% 50%;
+	animation: rotateCubeRightOut 1s both ease-in;
+}
+.page-rotateCubeRightIn {
+	transform-origin: 100% 50%;
+	animation: rotateCubeRightIn 1s both ease-in;
+}
+
+
+
 @keyframes rotateCubeLeftOut {
 	0% { }
 	50% { 
@@ -385,6 +512,29 @@ body{
     }
 }
 
+@keyframes rotateCubeRightOut {
+	0% { }
+	50% { 
+        animation-timing-function: ease-out; 
+        transform: translateX(50%) translateZ(-200px) rotateY(45deg); 
+    }
+	100% { 
+        opacity: .3; 
+        transform: translateX(100%) rotateY(90deg); 
+    }
+}
+
+@keyframes rotateCubeRightIn {
+	0% { 
+//        opacity: .3; 
+        transform: translateX(-100%) rotateY(-60deg); 
+    }
+	50% { 
+        animation-timing-function: ease-out; 
+        transform: translateX(-50%) translateZ(-200px) rotateY(-45deg); 
+    }
+}
+
 
 
 //typing animation
@@ -402,7 +552,7 @@ body{
             transform: translateY(-50%);
             height: 90%;
             width: 1px;
-            background-color: $fontColor;
+            background-color: $font-color;
         }
         
         &.waiting{
@@ -461,7 +611,7 @@ body{
 }
 .onoffswitch-label {
     display: block; overflow: hidden; cursor: pointer;
-    border: 2px solid $fontColor; border-radius: 0px;
+    border: 2px solid $font-color; border-radius: 0px;
 }
 .onoffswitch-inner {
     display: block; width: 200%; margin-left: -100%;
@@ -469,7 +619,7 @@ body{
 }
 .onoffswitch-inner:before, .onoffswitch-inner:after {
     display: block; float: left; width: 50%; height: 30px; padding: 0; line-height: 26px;
-    color: $fontColor;
+    color: $font-color;
     box-sizing: border-box;
     border: 2px solid transparent;
     background-clip: padding-box;
@@ -477,17 +627,17 @@ body{
 .onoffswitch-inner:before {
     content: "On";
     padding-left: 10px;
-    background-color: #00BD5B; color: $fontColor;
+    background-color: #00BD5B; color: $font-color;
 }
 .onoffswitch-inner:after {
     content: "Off";
     padding-right: 10px;
-    background-color: #aaa; color: $fontColor;
+    background-color: #aaa; color: $font-color;
     text-align: right;
 }
 .onoffswitch-switch {
     display: block; width: 40px; margin: 0px;
-    background: $fontColor;
+    background: $font-color;
     position: absolute; top: 0; bottom: 0;
     right: 42px;
     transition: all 0.3s ease-in 0s; 

@@ -4,6 +4,37 @@
   
 //    FUNCTIONS
     
+    function shadeBlend(p,c0,c1) {
+        var n=p<0?p*-1:p,u=Math.round,w=parseInt;
+        if(c0.length>7){
+            var f=c0.split(","),t=(c1?c1:p<0?"rgb(0,0,0)":"rgb(255,255,255)").split(","),R=w(f[0].slice(4)),G=w(f[1]),B=w(f[2]);
+            return "rgb("+(u((w(t[0].slice(4))-R)*n)+R)+","+(u((w(t[1])-G)*n)+G)+","+(u((w(t[2])-B)*n)+B)+")"
+        }else{
+            var f=w(c0.slice(1),16),t=w((c1?c1:p<0?"#000000":"#FFFFFF").slice(1),16),R1=f>>16,G1=f>>8&0x00FF,B1=f&0x0000FF;
+            return "#"+(0x1000000+(u(((t>>16)-R1)*n)+R1)*0x10000+(u(((t>>8&0x00FF)-G1)*n)+G1)*0x100+(u(((t&0x0000FF)-B1)*n)+B1)).toString(16).slice(1)
+        }
+    }
+    
+    function whichAnimationEnd(){
+      var t,
+          el = document.createElement("fakeelement");
+
+      var animations = {
+        "animation"      : "animationend",
+        "OAnimation"     : "oAnimationEnd",
+        "MozAnimation"   : "animationend",
+        "WebkitAnimation": "webkitAnimationEnd"
+      }
+
+      for (t in animations){
+        if (el.style[t] !== undefined){
+          return animations[t];
+        }
+      }
+    }
+
+    var animationEnd = whichAnimationEnd();
+    
     function toCamelCase(elem) {
         return elem.replace(/-([a-z0-9])/g, function (g) { 
             return g[1].toUpperCase(); 
@@ -63,6 +94,17 @@
         
         var body = $('body');
         
+        //randomize the page background
+        var backgroundColors = ['#A5D6A7', '#795548', '#80cbc4', '#90A4AE'];
+        
+        function randomColor (arr) {
+            var randomIndex = Math.floor(arr.length * Math.random());
+            return arr[randomIndex];
+        }
+        
+        body.css('background', randomColor(backgroundColors))
+        
+        
         //nice select plugin init
         $('select').niceSelect();
         
@@ -113,7 +155,7 @@
             playersName.slideDown().focus();
         }, animationDelay*3 + 200);
         
-        // saving player's name
+        // save player's name
         var playersName = $('#players-name');
         playersName.on('blur', function(e) {
             if (e.type == 'blur') {
@@ -143,21 +185,98 @@
         
         
         
-        //reveal new step
-        $('.next-btn').on('click', function(e){
-            e.preventDefault();
+        //pages navigation
+        var nextPageBtn = $('#next-page-btn'),
+            prevPageBtn = $('#prev-page-btn');
+        
+        var cube = {
             
-            var currentPage = $(this).parents('.page'),
-                nextPage = currentPage.next('.page');
+            pagesArray: $('.page'),
             
-            currentPage.addClass('page-rotateCubeLeftOut');
-            nextPage.addClass('page-ontop page-rotateCubeLeftIn');
-            setTimeout(function(){
-                currentPage.removeClass('current page-rotateCubeLeftOut');
-                nextPage.addClass('current').removeClass('page-ontop page-rotateCubeLeftIn');
-            }, 1000)
+            currentPageIndex: 0,
             
+            currentPage: function () {
+                return this.pagesArray[this.currentPageIndex]
+            },
+
+            nextPage: function () {
+                return this.pagesArray[this.currentPageIndex + 1];
+            },
+            
+            prevPage: function () {
+                return this.pagesArray[this.currentPageIndex - 1];
+            },
+            
+            goToNextPage: function (callback) {
+                
+                if (this.currentPageIndex == this.pagesArray.length - 1) return; 
+                
+                $(this.currentPage()).addClass('page-rotateCubeLeftOut');
+                $(this.nextPage()).addClass('page-ontop page-rotateCubeLeftIn');
+                               
+                $(this.nextPage()).one(animationEnd, function(callback) {
+                    prevPageBtn.removeClass('disable');
+                
+                    $(this.currentPage()).removeClass('current page-rotateCubeLeftOut');
+                    $(this.nextPage()).addClass('current').removeClass('page-ontop page-rotateCubeLeftIn');
+
+                    this.currentPageIndex++;
+
+                    if (this.currentPageIndex == this.pagesArray.length - 1) {
+                        nextPageBtn.addClass('disable');
+                    }
+                    
+                    callback();
+                    
+                }.bind(this, callback))
+            },
+            
+            goToPrevPage: function (callback) {
+                
+                if (this.currentPageIndex == 0) return; 
+                
+                $(this.currentPage()).addClass('page-rotateCubeRightOut');
+                $(this.prevPage()).addClass('page-ontop page-rotateCubeRightIn');   
+                                
+                $(this.prevPage()).one(animationEnd, function(callback) {
+                    nextPageBtn.removeClass('disable');
+                
+                    $(this.currentPage()).removeClass('current page-rotateCubeRightOut');
+                    $(this.prevPage()).addClass('current').removeClass('page-ontop page-rotateCubeRightIn');
+
+                    this.currentPageIndex--;
+
+                    if (this.currentPageIndex == 0) {
+                        prevPageBtn.addClass('disable');
+                    }
+                    
+                    callback();
+                    
+                }.bind(this, callback));
+               
+            }
+            
+        };
+        
+        function enableBtns() {
+            $('.btn').prop('disabled', false);
+        }
+        
+        function disableBtns() {
+            $('.btn').prop('disabled', true);
+        }
+        
+        nextPageBtn.on('click', function () {
+            disableBtns();
+            cube.goToNextPage(enableBtns);
+        });
+        
+        prevPageBtn.on('click', function () {
+            disableBtns();
+            cube.goToPrevPage(enableBtns);
         })
+        
+
         
         
         
@@ -410,6 +529,11 @@
                 
                 $('#avatar-wrapper').append(newAvatar);
             }
+            
+            //edit
+            self.editAvatar = function() {
+                $('#avatar-wrapper').empty();
+            }
                             
         }
         
@@ -605,7 +729,7 @@
         });
 
         
-        //FEATURS THAT DOESN'T USE CAROUSEL 
+        //FEATURES THAT DOESN'T USE CAROUSEL 
         
         //hair color selection
         var userHairColor = $('input[name="user-hair-color"]');
@@ -674,17 +798,86 @@
         })
         
         
-        //SAVE AVATAR
+        //save avatar
         var saveBtn = $('#save-avatar');
         
-        saveBtn.on('click', function(){
-                        
+        saveBtn.on('click', function(e){
+            e.preventDefault;
+            
             if (men) {
                 boyAvatar.saveAvatar();
             } else {
                 girlAvatar.saveAvatar();
             }
-         
+            
+            nextPageBtn.trigger('click');
+        });
+        
+        
+        //edit avatar
+        var editBtn = $('#edit-avatar');
+        
+        editBtn.on('click', function(e){
+            e.preventDefault;
+
+            //time for animation
+            setTimeout(function () {
+                if (men) {
+                    boyAvatar.editAvatar();
+                } else {
+                    girlAvatar.editAvatar();
+                }
+            }, 1000)
+            
+            prevPageBtn.trigger('click');
+        });
+        
+        
+        
+        //color the ice-cream
+        var iceCreamColors = ['#FF7697', '#82DDAB', '#F8D5AB', '#7F332D', '#FFCB00', '#BEF0FF'],
+            pencilSnippet = '<a href="#"><svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg"  x="0px" y="0px" viewBox="0 0 96.219 512.09624" xml:space="preserve" width="96.219002" height="512.09625"><g id="g3" transform="translate(-207.939,0)"><path style="fill:#ffd788" d="m 296.158,0 -80,0 c -4.418,0 -8,3.582 -8,8 l 0,376 44.282,125.466 c 1.238,3.507 6.198,3.507 7.435,0 L 304.158,384 l 0,-376 c 0,-4.418 -3.582,-8 -8,-8 z" /><path style="fill:#e6be94" d="m 255.939,280 0,232 0.544,0 c 1.431,-0.119 2.82,-0.909 3.393,-2.534 L 304.158,384 l 0,-104 -48.219,0 z" /><path style="fill:#ffcd00" d="m 296.158,0 -80,0 c -4.418,0 -8,3.582 -8,8 l 0,376 c 0,-8.837 7.164,-16 16,-16 8.836,0 16,7.163 16,16 0,-8.837 7.164,-16 16,-16 8.836,0 16,7.163 16,16 0,-8.837 7.164,-16 16,-16 8.836,0 16,7.163 16,16 l 0,-376 c 0,-4.418 -3.582,-8 -8,-8 z" /><path class="pencil-color2" d="m 240.158,384 c 0,-8.837 7.164,-16 16,-16 8.092,0 14.711,6.028 15.781,13.826 l 0,-381.826 -32,0 0,381.826 c 0.098,0.718 0.219,1.429 0.219,2.174 z" /><path class="pencil-color3" d="m 208.158,384 c 0,-8.837 7.164,-16 16,-16 8.092,0 14.711,6.028 15.781,13.826 l 0,-381.826 -24,0 c -4.418,0 -8,3.582 -8,8 l 0,373.826 c 0.098,0.718 0.219,1.429 0.219,2.174 z" /><path class="pencil-color1" d="m 303.719,384 c 0,-8.837 -7.164,-16 -16,-16 -8.092,0 -14.711,6.028 -15.781,13.826 l 0,-381.826 24,0 c 4.418,0 8,3.582 8,8 l 0,373.826 c -0.098,0.718 -0.219,1.429 -0.219,2.174 z" /><path class="pencil-color2" d="m 233.57,456 18.871,53.466 c 1.238,3.507 6.198,3.507 7.436,0 L 278.746,456 233.57,456 Z" /><path class="pencil-color1" d="m 255.939,512.031 c 1.624,0.091 3.288,-0.724 3.937,-2.565 l 18.87,-53.466 -22.808,0 0.001,56.031 0,0 z" /></g></svg></a>',
+            wrapper = $('#pencils-wrapper'),
+            picture = $('#ice-cream-to-color'),
+            areaToColor = picture.find('path, ellipse, polygon');
+            
+        var picturePainting = {
+            
+            activeColor: '',
+                        
+            createPencils: function (colorsArr) {
+                for (var i = 0; i < colorsArr.length; i++) {
+                    wrapper.append(pencilSnippet);
+                    var pencil = wrapper.find('a').eq(i);
+                    pencil.find('.pencil-color1').css('fill', colorsArr[i]);
+                    pencil.find('.pencil-color2').css('fill', shadeBlend(0.2, colorsArr[i]));
+                    pencil.find('.pencil-color3').css('fill', shadeBlend(0.4, colorsArr[i]));
+                }
+                wrapper.find('a').css('maxWidth', 100 / colorsArr.length + '%');
+            },
+            
+            chooseColor: function (elem) {
+                wrapper.find('a').removeClass('active');
+                elem.addClass('active');
+                this.activeColor = elem.find('.pencil-color1').css('fill');
+            },
+            
+            paintArea: function (area) {
+                area.css('fill', this.activeColor);
+            }
+        }
+        
+        
+        picturePainting.createPencils(iceCreamColors);
+
+        wrapper.find('a').on('click', function (e) {
+            e.preventDefault();
+            picturePainting.chooseColor($(this));
+        })
+        
+        areaToColor.on('click', function (e) {
+            e.preventDefault();
+            picturePainting.paintArea($(this));
         })
         
         
